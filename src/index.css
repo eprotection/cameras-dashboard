@@ -20,8 +20,8 @@ code {
 .App{  display:grid;}
 
 header       {grid-area: header;}
-#layout-list {grid-area: list; background:  #555;}
-#layout-data {grid-area: data; background: #000;}
+#layout-list {grid-area: list; background: #444; overflow-y: auto;}
+#layout-data {grid-area: data; background: #000; overflow-y: auto;}
 
 @media all and (orientation:landscape){
   .App{
@@ -34,7 +34,7 @@ header       {grid-area: header;}
 }
 @media all and (orientation:portrait){
   .App{
-      grid-template-rows:    3em 1fr 1fr;
+      grid-template-rows:    3em 1fr 2fr;
       grid-template-columns: 1fr;
       grid-template-areas: 
       "header"
