@@ -1,23 +1,24 @@
-import React,{Fragment, useState, useEffect} from "react";
+import React,{Fragment, useState} from "react";
+import FormFTP from "./FormFTP"
 
 const ConfFTP = ({ftp})=>{
 
     const [isOpen,setOpen] = useState(false)
     
-
     console.log(`ConFTP render, isOpen=${isOpen}`)
+
+    const onSave = (ftpNew)=>{
+        console.log('ConfFTP onSave',ftpNew)
+    }
 
     const renderDialog = ()=>(<div className="dialog-fog">
         <div className="dialog">
             <div className="title">FTP Settings</div>
-            <div>DIALOG</div>
-            <div>DIALOG</div>
-            <div>DIALOG</div>
-            <div>DIALOG</div>
-            <div className="bar">
-                <span className="btn clk" onClick={()=>{setOpen(false)}}>Cancel</span>
-                <span className="btn clk">Save</span>
-            </div>
+                <FormFTP 
+                ftp={ftp}
+                onCancel={()=>{setOpen(false)}}
+                onOK={onSave}
+                />
         </div>
     </div>)
 

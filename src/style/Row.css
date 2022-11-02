@@ -11,3 +11,10 @@
     grid-template-columns: 1fr 2fr;
   
 }
+
+.row .mac{
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 90%;
+    color:#ff8
+}
