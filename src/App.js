@@ -1,26 +1,25 @@
 import React,{useState,useEffect} from "react"
 import logo from './logo.svg';
-import './App.css';
+import './style/App.css';
 import {backend} from './Backend'
 import CamRow from './CamRow'
-
-var mt = 0
+import ConfFTP from './ConfFTP'
+import usePrefs   from './data/prefs'
+import useCameras from './data/cameras'
 
 function App() {
   //console.log(`App render`,process.env)
-  console.log(`App render mt=${mt}`)
+  console.log(`App render`)
 
   const [error,setError]      = useState(null)
   const [user, setUser]       = useState(null)
-  const [cameras, setCameras] = useState([])
+  const prefs                 = usePrefs()
+  const cameras               = useCameras()
 
   useEffect(() => {
     console.log(`App mounted`)
     async function fetchData(){
       try{
-        // Init backend (check ws)
-        backend.init()
-
         // Load auth
         const auth = await backend.request('GET','/auth/info')
         setUser({
@@ -28,11 +27,11 @@ function App() {
           role : auth.role.name
         })
 
+        // Load prefs
+        await prefs.load()
+
         // Load cameras
-        const data = await backend.request('POST','/cameras/load_cameras',{mt:mt})
-        console.log(data)
-        mt = data.till_mt
-        setCameras(data.results)
+        await cameras.load()
 
       }catch(err){
         console.error(err)
@@ -43,7 +42,7 @@ function App() {
 
   }, []);
 
-  let rows = cameras
+  let rows = cameras.list
     .sort((a,b)=>a.name.localeCompare(b.name))
     .map(cam=>(<CamRow 
         key={cam.id.toString()}
@@ -61,6 +60,10 @@ function App() {
           <div>{user.role}</div>
         </div>}
       </header>
+
+      <aside>
+        <ConfFTP ftp={prefs.ftp}/>
+      </aside>
 
       <div id="layout-list">
         {rows}

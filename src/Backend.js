@@ -8,7 +8,8 @@ export class ApiError{
     }
 }
 export class Backend{
-        init(){
+    init(){
+        if(this.API_URL) return;
         // Workspace
         const urlParams = new URLSearchParams(window.location.search)
         let ws = urlParams.get('ws')
@@ -25,6 +26,8 @@ export class Backend{
     //----------------------------------------------------------------
     // SEND JSON
     async request(method, path, json){
+        if(!this.API_URL) this.init();
+        
         let params = {
             method: method,
             credentials: "include",// to allow cookies

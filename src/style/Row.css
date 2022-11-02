@@ -1,13 +1,11 @@
 .row {
-    background: #222;
     color: #fff;
     padding:0.5em;
     text-align: left;
-}
-.row:nth-child(odd) {
-    background-color: #333;
-}
-  
+    margin-bottom: 0.3em;
+    border-radius: 10px;
+}  
+
 .row .main{
     display: grid;
     grid-template-columns: 1fr 2fr;
