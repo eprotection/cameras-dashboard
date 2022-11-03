@@ -1,35 +1,64 @@
 import React,{Fragment, useState} from "react";
 
 import useInputState from './useInputState';
+import {load} from './data/cameras';
 
-const FormFTP = ({ftp, onCancel, onOK})=>{
+const FormFTP = ({ftp, onFinished})=>{
 
-    const user = useInputState(ftp?ftp.user:'');
-    const host = useInputState(ftp?ftp.host:'');
-    const pass = useInputState(ftp?ftp.password:'');
+    // Input data
+    const [user, setUser] = useState(ftp?ftp.user:'');
+    const [host, setHost] = useState(ftp?ftp.host:'');
+    const [pass, setPass] = useState(ftp?ftp.password:'');
+    // Saving state
+    const [busy,  setBusy]  = useState(false)
+    const [error, setError] = useState(null)
     
-    console.log(`FormFTP render, ${user.value}@${host.value}`)
+    console.log(`FormFTP render, ${user}@${host.value}`)
+
+    const onInput = ()=>{
+        setError(null)
+    }
+
+    const onSave = ()=>{
+        console.log('FormFTP onSave')
+        setError(null)
+        setBusy(true)
+        load()
+            .then(()=>{
+                console.log('FormFTP saving success')
+                onFinished()
+            })
+            .catch(error=>{
+                console.log('FormFTP saving error',error)
+                setBusy(false)
+                setError(error.toString())
+            })
+    }
 
     return (
     <form>
         <div>User<input 
             type='text' 
-            onChange={user.onChange}
-            value={user.value}/></div>
+            onChange={e=>{setUser(e.target.value); onInput();}}
+            value={user}/></div>
         <div>Host<input 
             type='text' 
-            onChange={host.onChange}
-            value={host.value}/></div>
+            onChange={e=>{setHost(e.target.value); onInput();}}
+            value={host}/></div>
         <div>Pass<input 
             type='text' 
-            onChange={pass.onChange}
-            value={pass.value}/></div>
+            onChange={e=>{setPass(e.target.value); onInput();}}
+            value={pass}/></div>
+        <div className="message">
+            {error && <span className="err">{error}</span>}
+        </div>
         <div className="bar">
             <span className="btn clk" 
-                onClick={onCancel}>Cancel</span>
+                onClick={onFinished}>Cancel</span>
             <span className="btn clk" 
-                onClick={()=>{onOK({user:user.value, host:host.value, pass:pass.value})}}>Save</span>
+                onClick={onSave}>Save</span>
         </div>
+        {busy && <div className="fog"></div>}
     </form>)
 
 }

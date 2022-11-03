@@ -23,6 +23,17 @@
 .bar{
   display:flex;
   flex-direction: row;
+  justify-content: space-between;
+}
+.err{
+  color:#ff0
+}
+.fog{
+  position:absolute;
+  top:0px;     left:0px;
+  bottom: 0px; right:0px;
+  background: #00000088;
+  cursor: wait;
 }
 form{
   margin: 1em;
@@ -91,6 +102,9 @@ aside .ftp{
 .dialog .title{  
   border-bottom: 1px solid white;
   padding-bottom: 0.5em;
+}
+.dialog .message{
+  min-height: 3em;
 }
 
 

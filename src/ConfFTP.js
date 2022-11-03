@@ -7,17 +7,12 @@ const ConfFTP = ({ftp})=>{
     
     console.log(`ConFTP render, isOpen=${isOpen}`)
 
-    const onSave = (ftpNew)=>{
-        console.log('ConfFTP onSave',ftpNew)
-    }
-
     const renderDialog = ()=>(<div className="dialog-fog">
         <div className="dialog">
             <div className="title">FTP Settings</div>
                 <FormFTP 
                 ftp={ftp}
-                onCancel={()=>{setOpen(false)}}
-                onOK={onSave}
+                onFinished={()=>{setOpen(false)}}
                 />
         </div>
     </div>)

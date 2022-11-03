@@ -31,7 +31,7 @@ function App() {
         await prefs.load()
 
         // Load cameras
-        await cameras.load()
+        //await cameras.load()
 
       }catch(err){
         console.error(err)
