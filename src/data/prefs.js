@@ -45,6 +45,5 @@ export default () => {
             // Update by local value
             setIP(value)
         }
-
     }
 }

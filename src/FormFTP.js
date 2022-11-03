@@ -1,5 +1,6 @@
 import React,{Fragment, useState} from "react";
 import {useObjectInputState} from "./FormUtils"
+import {backend} from './Backend'
 
 const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
 
@@ -28,19 +29,43 @@ const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
             })
     }
 
+    const testConnection = ()=>{
+        console.log('FormFTP testConnection')
+        setError(null)
+        setBusy(true)
+
+        backend.request('POST','/cameras/verify_ftp',data)
+            .then(()=>{
+                setBusy(false)
+                setError('PASSED')
+            })
+            .catch(error=>{
+                setBusy(false)
+                setError(error.toString())
+            })
+    }
+
     return (
     <form>
 
         <div className="input-table">
-            <i>User</i>{renderTextInput('user')}
             <i>Host</i>{renderTextInput('host')}
+            <i>User</i>{renderTextInput('user')}
             <i>Pass</i>{renderTextInput('password')}
         {useFolder&&
             <><i>Folder</i>{renderTextInput('folder')}</>}
         </div>
+
+        <div>
+            <span className="btn clk" 
+                onClick={testConnection}>Test Connection</span>
+        </div>
+
         <div className="message">
             {error && <span className="err">{error}</span>}
         </div>
+
+
         <div className="bar">
             <span className="btn clk" 
                 onClick={onFinished}>Cancel</span>
