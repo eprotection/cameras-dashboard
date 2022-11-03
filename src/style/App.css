@@ -77,8 +77,9 @@ header .user{
 aside {
   display: flex;
   flex-direction: row;
-  font-size: 90%;
-  padding: 0.2em 1em;
+  justify-content: space-between;
+  font-size: 80%;
+  padding: 0.2em 0.5em;
 }
 aside .ftp{
   padding: 0.2em 1em;
@@ -105,6 +106,14 @@ aside .ftp{
 }
 .dialog .message{
   min-height: 3em;
+}
+.dialog .i{
+  display:inline-block;
+  width:5em;
+}
+.dialog .input-table{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }
 
 

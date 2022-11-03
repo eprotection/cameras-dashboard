@@ -1,7 +1,7 @@
 import React,{Fragment, useState} from "react";
 import {useObjectInputState} from "./FormUtils"
 
-const FormFTP = ({ftp, onFinished, onSaveAsync})=>{
+const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
 
     // Input data object
     const {data, renderTextInput} = useObjectInputState(ftp,()=>{setError(null)});
@@ -30,9 +30,14 @@ const FormFTP = ({ftp, onFinished, onSaveAsync})=>{
 
     return (
     <form>
-        <div>User{renderTextInput('user')}</div>
-        <div>Host{renderTextInput('host')}</div>
-        <div>Pass{renderTextInput('password')}</div>
+
+        <div className="input-table">
+            <i>User</i>{renderTextInput('user')}
+            <i>Host</i>{renderTextInput('host')}
+            <i>Pass</i>{renderTextInput('password')}
+        {useFolder&&
+            <><i>Folder</i>{renderTextInput('folder')}</>}
+        </div>
         <div className="message">
             {error && <span className="err">{error}</span>}
         </div>

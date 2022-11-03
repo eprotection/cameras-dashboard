@@ -58,14 +58,28 @@ function App() {
 
   const showFtpDialog = ()=>{
     showDialog(
-      'FTP Settings',
+      'Cameras FTP',
       <FormFTP 
           ftp={prefs.ftp}
+          useFolder={false}
           onFinished={hideDialog}
           onSaveAsync={prefs.saveFTP}
           />
     )
   }
+
+  const showIpDialog = ()=>{
+    showDialog(
+      'Image Processor FTP',
+      <FormFTP 
+          ftp={prefs.ip}
+          useFolder={true}
+          onFinished={hideDialog}
+          onSaveAsync={prefs.saveIP}
+          />
+    )
+  }
+
 
   //-------------------------------------------------------------------
   // RENDER
@@ -89,7 +103,8 @@ function App() {
       </header>
 
       <aside>
-        <ConfFTP ftp={prefs.ftp} onClick={showFtpDialog}/>
+        <ConfFTP label="Cameras FTP:" data={prefs.ftp} onClick={showFtpDialog}/>
+        <ConfFTP label="IP FTP:"      data={prefs.ip}  onClick={showIpDialog}/>
       </aside>
 
       <div id="layout-list">

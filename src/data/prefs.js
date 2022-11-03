@@ -3,6 +3,7 @@ import {backend} from '../Backend'
 
 var mt = 0
 const FTP_SERVER_ID  = 2021
+const IP_SERVER_ID   = 2025
 
 export default () => {
     
@@ -22,17 +23,27 @@ export default () => {
             for(const pref of data.results){
                 switch(pref.id){
                     case FTP_SERVER_ID: setFTP(pref.value); break;
+                    case IP_SERVER_ID:  setIP (pref.value); break;
                 }
             }
         },
 
-        saveFTP : async (newFtp) => {
+        saveFTP : async (value) => {
             let data = await backend.request('POST','/prefs/set_common_pref',
                 {id    : FTP_SERVER_ID, 
-                 value : newFtp})
+                 value : value})
             console.log('saveFTP finished:',data)
             // Update by local value
-            setFTP(newFtp)
+            setFTP(value)
+        },
+
+        saveIP : async (value) => {
+            let data = await backend.request('POST','/prefs/set_common_pref',
+                {id    : IP_SERVER_ID, 
+                 value : value})
+            console.log('saveIP finished:',data)
+            // Update by local value
+            setIP(value)
         }
 
     }
