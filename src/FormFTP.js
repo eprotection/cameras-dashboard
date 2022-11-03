@@ -1,26 +1,22 @@
 import React,{Fragment, useState} from "react";
+import {useObjectInputState} from "./FormUtils"
 
 const FormFTP = ({ftp, onFinished, onSaveAsync})=>{
 
-    // Input data
-    const [user, setUser] = useState(ftp?ftp.user:'');
-    const [host, setHost] = useState(ftp?ftp.host:'');
-    const [pass, setPass] = useState(ftp?ftp.password:'');
+    // Input data object
+    const {data, renderTextInput} = useObjectInputState(ftp,()=>{setError(null)});
     // Saving state
     const [busy,  setBusy]  = useState(false)
     const [error, setError] = useState(null)
     
-    console.log(`FormFTP render, ${user}@${host}`)
+    console.log(`FormFTP render, ${data.user}@${data.host}`)
 
-    const onInput = ()=>{
-        setError(null)
-    }
 
     const onSave = ()=>{
         console.log('FormFTP onSave')
         setError(null)
         setBusy(true)
-        onSaveAsync({user:user,host:host,password:pass})
+        onSaveAsync(data)
             .then(()=>{
                 console.log('FormFTP saving success')
                 onFinished()
@@ -34,18 +30,9 @@ const FormFTP = ({ftp, onFinished, onSaveAsync})=>{
 
     return (
     <form>
-        <div>User<input 
-            type='text' 
-            onChange={e=>{setUser(e.target.value); onInput();}}
-            value={user}/></div>
-        <div>Host<input 
-            type='text' 
-            onChange={e=>{setHost(e.target.value); onInput();}}
-            value={host}/></div>
-        <div>Pass<input 
-            type='text' 
-            onChange={e=>{setPass(e.target.value); onInput();}}
-            value={pass}/></div>
+        <div>User{renderTextInput('user')}</div>
+        <div>Host{renderTextInput('host')}</div>
+        <div>Pass{renderTextInput('password')}</div>
         <div className="message">
             {error && <span className="err">{error}</span>}
         </div>
