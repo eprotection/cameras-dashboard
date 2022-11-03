@@ -4,6 +4,7 @@ import './style/App.css';
 import {backend} from './Backend'
 import CamRow from './CamRow'
 import ConfFTP from './ConfFTP'
+import FormFTP from "./FormFTP"
 import usePrefs   from './data/prefs'
 import useCameras from './data/cameras'
 
@@ -11,8 +12,9 @@ function App() {
   //console.log(`App render`,process.env)
   console.log(`App render`)
 
-  const [error,setError]      = useState(null)
-  const [user, setUser]       = useState(null)
+  const [user,   setUser]     = useState(null)
+  const [error,  setError]    = useState(null)
+  const [dialog, setDialog]   = useState(null)
   const prefs                 = usePrefs()
   const cameras               = useCameras()
 
@@ -42,6 +44,31 @@ function App() {
 
   }, []);
 
+  //-------------------------------------------------------------------
+  // DIALOGS
+  const showDialog = (title, form)=>{
+    setDialog(<div className="dialog-fog">
+      <div className="dialog">
+          <div className="title">{title}</div>
+              {form}
+      </div>
+    </div>)
+  }
+  const hideDialog = ()=>{setDialog(null)}
+
+  const showFtpDialog = ()=>{
+    showDialog(
+      'FTP Settings',
+      <FormFTP 
+          ftp={prefs.ftp}
+          onFinished={hideDialog}
+          onSaveAsync={cameras.load}
+          />
+    )
+  }
+
+  //-------------------------------------------------------------------
+  // RENDER
   let rows = cameras.list
     .sort((a,b)=>a.name.localeCompare(b.name))
     .map(cam=>(<CamRow 
@@ -62,7 +89,7 @@ function App() {
       </header>
 
       <aside>
-        <ConfFTP ftp={prefs.ftp}/>
+        <ConfFTP ftp={prefs.ftp} onClick={showFtpDialog}/>
       </aside>
 
       <div id="layout-list">
@@ -77,6 +104,7 @@ function App() {
         </div>
       }
 
+      {dialog}
 
     </div>
   );

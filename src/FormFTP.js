@@ -1,9 +1,6 @@
 import React,{Fragment, useState} from "react";
 
-import useInputState from './useInputState';
-import {load} from './data/cameras';
-
-const FormFTP = ({ftp, onFinished})=>{
+const FormFTP = ({ftp, onFinished, onSaveAsync})=>{
 
     // Input data
     const [user, setUser] = useState(ftp?ftp.user:'');
@@ -23,7 +20,7 @@ const FormFTP = ({ftp, onFinished})=>{
         console.log('FormFTP onSave')
         setError(null)
         setBusy(true)
-        load()
+        onSaveAsync()
             .then(()=>{
                 console.log('FormFTP saving success')
                 onFinished()

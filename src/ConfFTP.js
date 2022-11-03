@@ -1,29 +1,14 @@
 import React,{Fragment, useState} from "react";
-import FormFTP from "./FormFTP"
 
-const ConfFTP = ({ftp})=>{
-
-    const [isOpen,setOpen] = useState(false)
+const ConfFTP = ({ftp,onClick})=>{
     
-    console.log(`ConFTP render, isOpen=${isOpen}`)
+    console.log(`ConFTP render`)
 
-    const renderDialog = ()=>(<div className="dialog-fog">
-        <div className="dialog">
-            <div className="title">FTP Settings</div>
-                <FormFTP 
-                ftp={ftp}
-                onFinished={()=>{setOpen(false)}}
-                />
-        </div>
-    </div>)
-
-    return (<Fragment>
-        <div>
+    return (<div>
             FTP:<span className="ftp clk"
-                onClick={()=>{setOpen(true)}}
-                >{ftp?`${ftp.user}@${ftp.host}`:"[user@host]"}</span>
-        </div>
-        {isOpen && renderDialog()}
-    </Fragment>)
+                onClick={onClick}>
+                    {ftp?`${ftp.user}@${ftp.host}`:"[user@host]"}
+                </span>
+        </div>)
 }
 export default React.memo(ConfFTP);
