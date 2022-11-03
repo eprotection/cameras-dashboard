@@ -10,7 +10,7 @@ const FormFTP = ({ftp, onFinished, onSaveAsync})=>{
     const [busy,  setBusy]  = useState(false)
     const [error, setError] = useState(null)
     
-    console.log(`FormFTP render, ${user}@${host.value}`)
+    console.log(`FormFTP render, ${user}@${host}`)
 
     const onInput = ()=>{
         setError(null)
@@ -20,7 +20,7 @@ const FormFTP = ({ftp, onFinished, onSaveAsync})=>{
         console.log('FormFTP onSave')
         setError(null)
         setBusy(true)
-        onSaveAsync()
+        onSaveAsync({user:user,host:host,password:pass})
             .then(()=>{
                 console.log('FormFTP saving success')
                 onFinished()

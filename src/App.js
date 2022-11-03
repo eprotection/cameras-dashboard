@@ -33,7 +33,7 @@ function App() {
         await prefs.load()
 
         // Load cameras
-        //await cameras.load()
+        await cameras.load()
 
       }catch(err){
         console.error(err)
@@ -62,7 +62,7 @@ function App() {
       <FormFTP 
           ftp={prefs.ftp}
           onFinished={hideDialog}
-          onSaveAsync={cameras.load}
+          onSaveAsync={prefs.saveFTP}
           />
     )
   }

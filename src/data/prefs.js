@@ -2,6 +2,7 @@ import {useState} from "react"
 import {backend} from '../Backend'
 
 var mt = 0
+const FTP_SERVER_ID  = 2021
 
 export default () => {
     
@@ -20,10 +21,18 @@ export default () => {
             console.log('prefs:',data)
             for(const pref of data.results){
                 switch(pref.id){
-                    case 2021: setFTP(pref.value); break;
+                    case FTP_SERVER_ID: setFTP(pref.value); break;
                 }
             }
-    
+        },
+
+        saveFTP : async (newFtp) => {
+            let data = await backend.request('POST','/prefs/set_common_pref',
+                {id    : FTP_SERVER_ID, 
+                 value : newFtp})
+            console.log('saveFTP finished:',data)
+            // Update by local value
+            setFTP(newFtp)
         }
 
     }
