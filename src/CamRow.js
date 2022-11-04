@@ -6,7 +6,7 @@ class CamRow extends React.Component{
 
         const { cam } = this.props
 
-        console.log(`render #${cam.id} ${cam.name}`)
+        //console.log(`render #${cam.id} ${cam.name}`)
 
         return (
             <div className='row clk'>

@@ -7,6 +7,7 @@ import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
 import usePrefs   from './data/prefs'
 import useCameras from './data/cameras'
+import ImageList from "./ImageList";
 
 function App() {
   //console.log(`App render`,process.env)
@@ -111,7 +112,9 @@ function App() {
         {rows}
       </div>
 
-      <div id="layout-data"></div>
+      <div id="layout-data">
+        <ImageList cameras={cameras.selected}/>
+      </div>
 
       {error &&
         <div className="error">

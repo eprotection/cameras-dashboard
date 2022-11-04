@@ -49,8 +49,8 @@ const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
     <form>
 
         <div className="input-table">
-            <i>Host</i>{renderTextInput('host')}
             <i>User</i>{renderTextInput('user')}
+            <i>Host</i>{renderTextInput('host')}
             <i>Pass</i>{renderTextInput('password')}
         {useFolder&&
             <><i>Folder</i>{renderTextInput('folder')}</>}
