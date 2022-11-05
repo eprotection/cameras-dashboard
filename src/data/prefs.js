@@ -1,5 +1,5 @@
 import {useState} from "react"
-import {backend} from '../Backend'
+import {apiRequest} from '../Backend'
 
 var mt = 0
 const FTP_SERVER_ID  = 2021
@@ -17,7 +17,7 @@ export default () => {
         ip  : ip,
 
         load : async () => {
-            let data = await backend.request('POST','/prefs/load_prefs',{mt:mt})
+            let data = await apiRequest('POST','/prefs/load_prefs',{mt:mt})
             mt = data.till_mt
             console.log('prefs:',data)
             for(const pref of data.results){
@@ -29,7 +29,7 @@ export default () => {
         },
 
         saveFTP : async (value) => {
-            let data = await backend.request('POST','/prefs/set_common_pref',
+            let data = await apiRequest('POST','/prefs/set_common_pref',
                 {id    : FTP_SERVER_ID, 
                  value : value})
             console.log('saveFTP finished:',data)
@@ -38,7 +38,7 @@ export default () => {
         },
 
         saveIP : async (value) => {
-            let data = await backend.request('POST','/prefs/set_common_pref',
+            let data = await apiRequest('POST','/prefs/set_common_pref',
                 {id    : IP_SERVER_ID, 
                  value : value})
             console.log('saveIP finished:',data)

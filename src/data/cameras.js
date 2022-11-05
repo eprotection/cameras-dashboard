@@ -1,12 +1,12 @@
 import {useState} from "react"
-import {backend} from '../Backend'
+import {apiRequest} from '../Backend'
 
 var mt = 0
 
 export var load = async () => {
     // Load
     console.log('cameras: start loading...')
-    let data = await backend.request('POST','/cameras/load_cameras',{mt:mt})
+    let data = await apiRequest('POST','/cameras/load_cameras',{mt:mt})
     mt = data.till_mt
     console.log('cameras:',data)
     // Update

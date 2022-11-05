@@ -1,12 +1,12 @@
 import React from 'react';
 import './style/Row.css';
 
-class CamRow extends React.Component{
+class CamRow extends React.PureComponent{
     render(){
 
         const { cam } = this.props
 
-        //console.log(`render #${cam.id} ${cam.name}`)
+        console.log(`CamRow render #${cam.id} ${cam.name}`)
 
         return (
             <div className='row clk'>

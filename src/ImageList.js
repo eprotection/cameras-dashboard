@@ -1,5 +1,5 @@
 import React from "react"
-import {backend} from './Backend'
+import {apiRequest} from './Backend'
 import {formatDateTime} from './Utils'
 
 const MIN_LOADING_TIME = 800
@@ -48,7 +48,7 @@ class ImageList extends React.Component{
 
         const ids = cameras.map(item=>item.id)
         const timeStart = new Date().getTime()
-        backend.request('POST','/cameras/load_images',{
+        apiRequest('POST','/cameras/load_images',{
             ids   : ids,
             limit : PAGE_SIZE,
             before: minTime

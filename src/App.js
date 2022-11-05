@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react"
 import logo from './logo.svg';
 import './style/App.css';
-import {backend} from './Backend'
+import {apiRequest} from './Backend'
 import CamRow from './CamRow'
 import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
@@ -24,7 +24,7 @@ function App() {
     async function fetchData(){
       try{
         // Load auth
-        const auth = await backend.request('GET','/auth/info')
+        const auth = await apiRequest('GET','/auth/info')
         setUser({
           name : auth.user.name,
           role : auth.role.name

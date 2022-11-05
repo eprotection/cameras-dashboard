@@ -1,6 +1,6 @@
 import React,{Fragment, useState} from "react";
 import {useObjectInputState} from "./FormUtils"
-import {backend} from './Backend'
+import {apiRequest} from './Backend'
 
 const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
 
@@ -34,7 +34,7 @@ const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
         setError(null)
         setBusy(true)
 
-        backend.request('POST','/cameras/verify_ftp',data)
+        apiRequest('POST','/cameras/verify_ftp',data)
             .then(()=>{
                 setBusy(false)
                 setError('PASSED')
