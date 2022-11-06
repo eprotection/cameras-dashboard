@@ -58,7 +58,8 @@ export const apiRequest = async function(method, path, json){
 
 export default {
     init       : init,
-    apiRequest : apiRequest
+    apiRequest : apiRequest,
+    getApiUrl  : ()=>API_URL
 }
 
 

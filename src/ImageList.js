@@ -2,6 +2,8 @@ import React from "react"
 import {apiRequest} from './Backend'
 import {formatDateTime} from './Utils'
 import{getSelectedCamIds} from './App'
+import Cell from "./Cell"
+
 
 const MIN_LOADING_TIME = 700
 const PAGE_SIZE = 5
@@ -80,26 +82,32 @@ class ImageList extends React.Component{
     render(){
         const {selectedCamera} = this.props
         console.log(`ImageList render, selectedCamera: #${selectedCamera?.id}`)
-        let items = this.state.images.map(item=>
-            (<div key={`${item.id}-${item.time}`}>
-                {formatDateTime(item.time)} {item.file}
-            </div>))
+        //let items = 
 
         return (
         <div>
-            <h3>Image list for: {selectedCamera?selectedCamera.name:'ALL CAMERAS'}</h3>
+            <h3>Images from: {selectedCamera?selectedCamera.name:'ALL CAMERAS'}</h3>
 
             {this.state.error && 
             <div className="message"><span className="err">{this.state.error}</span></div>}
             
-            <div>{items}</div>
+            <div className="cell-container">
+                {this.state.images.map(item=>
+                    <Cell 
+                        key={`${item.id}-${item.time}`} 
+                        data={item}/>
+                )}
 
-            {this.state.loading && <div>LOADING...</div>}
+                {this.state.loading && 
+                <div className="last-cell">
+                    <span>LOADING...</span>
+                </div>}
 
-            {this.state.images.length>0 && this.state.hasMore && !this.state.loading &&
-            <div><span className="btn clk" onClick={()=>{this.loadData()}}>show more</span></div>}
-
-
+                {this.state.images.length>0 && this.state.hasMore && !this.state.loading &&
+                <div className="last-cell">
+                    <span className="btn clk" onClick={()=>{this.loadData()}}>show more</span>
+                </div>}
+            </div>
         </div>)
     }
 }

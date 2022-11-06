@@ -13,7 +13,7 @@
 }
 .clk:hover{
   cursor:pointer;
-  background: #ffff0033;
+  background: #ffff0055;
 }
 .btn{
   display: inline-block;
@@ -78,13 +78,15 @@ header .user{
 aside {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   font-size: 80%;
   padding: 0.2em 0.5em;
 }
+aside>div{
+  margin-right: 2em;
+}
 aside .ftp{
   padding: 0.2em 1em;
-  margin-left: 0.5em;
 }
 
 .dialog-fog{

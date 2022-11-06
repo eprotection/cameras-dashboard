@@ -170,7 +170,7 @@ class App extends React.Component {
   render(){
 
     const {user, error, dialog, selectedCamera, cameras, prefs} = this.state;
-    console.log(`App render, selected camera:`,selectedCamera)
+    console.log(`App render, selected camera: #${selectedCamera?.id}`)
 
     let rows = cameras
       .sort((a,b)=>a.name.localeCompare(b.name))
