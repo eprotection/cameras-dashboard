@@ -56,5 +56,10 @@ export const apiRequest = async function(method, path, json){
     })
 }
 
+export default {
+    init       : init,
+    apiRequest : apiRequest
+}
+
 
 

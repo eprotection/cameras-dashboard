@@ -1,16 +1,21 @@
 import React from 'react';
 import './style/Row.css';
+import {setSelectedCamera} from "./App"
 
 class CamRow extends React.PureComponent{
     render(){
 
-        const { cam } = this.props
+        const { cam, isSelected } = this.props
 
-        console.log(`CamRow render #${cam.id} ${cam.name}`)
+        //console.log(`CamRow render #${cam.id} ${cam.name} ${isSelected}`)
+
+
 
         return (
-            <div className='row clk'>
+            <div className={`row clk ${isSelected?'selected':''}`}
+                onClick={()=>{setSelectedCamera(cam)}}>
                 <div className='main'>
+                    {isSelected.toString()}
                     <span className='mac' >{cam.mac}</span>
                     <span className='name'>{cam.name}</span>
                 </div>

@@ -1,9 +1,10 @@
 import React from "react"
 import {apiRequest} from './Backend'
 import {formatDateTime} from './Utils'
+import{getSelectedCamIds} from './App'
 
-const MIN_LOADING_TIME = 800
-const PAGE_SIZE = 3
+const MIN_LOADING_TIME = 700
+const PAGE_SIZE = 5
 
 class ImageList extends React.Component{
     constructor(props){
@@ -20,14 +21,13 @@ class ImageList extends React.Component{
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        // onClick - GENERATES DIFFERENCE!
+        // props.onClick - GENERATES DIFFERENCE!
         
-        // props.cameras changed?
-        if (this.props.cameras !== nextProps.cameras){
-            console.log(`ImageList cameras changed => skip update, start loading`)
+        // props.selectedCamera changed?
+        if (this.props.selectedCamera !== nextProps.selectedCamera){
+            console.log(`ImageList selectedCamera changed => skip update, start loading`)
             // Reload images
-            this.setState({images:[]})
-            this.loadData(nextProps.cameras) // converts prop change to state change
+            this.loadData(true) // converts prop change to state change
         }
 
         // Updating on state change only!!!
@@ -36,20 +36,19 @@ class ImageList extends React.Component{
         return false;
     }
 
-    loadData(newCameras){
-        let cameras = newCameras?newCameras:this.props.cameras
-        const {images} = this.state
+    loadData(reload){
+        const images = reload? [] : this.state.images
         const minTime = images.length>0?images[images.length-1].time : null
         console.log(`ImageList loadData, minTime:${minTime}`)
         this.setState({
+            images : images,
             error  : null,
             loading: true
         })
 
-        const ids = cameras.map(item=>item.id)
         const timeStart = new Date().getTime()
         apiRequest('POST','/cameras/load_images',{
-            ids   : ids,
+            ids   : getSelectedCamIds(),
             limit : PAGE_SIZE,
             before: minTime
         })
@@ -79,7 +78,8 @@ class ImageList extends React.Component{
     //-----------------------------------------------------------------------------
     // RENDER
     render(){
-        console.log(`ImageList render`)
+        const {selectedCamera} = this.props
+        console.log(`ImageList render, selectedCamera: #${selectedCamera?.id}`)
         let items = this.state.images.map(item=>
             (<div key={`${item.id}-${item.time}`}>
                 {formatDateTime(item.time)} {item.file}
@@ -87,6 +87,8 @@ class ImageList extends React.Component{
 
         return (
         <div>
+            <h3>Image list for: {selectedCamera?selectedCamera.name:'ALL CAMERAS'}</h3>
+
             {this.state.error && 
             <div className="message"><span className="err">{this.state.error}</span></div>}
             

@@ -1,82 +1,165 @@
 import React,{useState,useEffect} from "react"
 import logo from './logo.svg';
 import './style/App.css';
-import {apiRequest} from './Backend'
+import backend from './Backend'
 import CamRow from './CamRow'
 import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
-import usePrefs   from './data/prefs'
-import useCameras from './data/cameras'
 import ImageList from "./ImageList";
 
-function App() {
-  //console.log(`App render`,process.env)
-  console.log(`App render`)
+export var setSelectedCamera
+export var getSelectedCamIds
+export var showFtpDialog
+export var showIpDialog
+export var hideDialog
+export var savePref
 
-  const [user,   setUser]     = useState(null)
-  const [error,  setError]    = useState(null)
-  const [dialog, setDialog]   = useState(null)
-  const prefs                 = usePrefs()
-  const cameras               = useCameras()
+var mtCameras = 0
+var mtPrefs   = 0
+const FTP_SERVER_ID  = 2021
+const IP_SERVER_ID   = 2025
 
-  useEffect(() => {
+
+class App extends React.Component {
+  constructor(props){
+    super(props)
+    this.state={
+      user          : null,
+      error         : null,
+      dialog        : null,
+      // Data
+      cameras       : [],
+      selectedCamera: undefined,
+      prefs         : {}
+    }
+
+    // Interface
+    setSelectedCamera = this.setSelectedCamera.bind(this)
+    getSelectedCamIds = this.getSelectedCamIds.bind(this)
+    showFtpDialog     = this.showFtpDialog.bind(this)
+    showIpDialog      = this.showIpDialog.bind(this)
+    hideDialog        = this.hideDialog.bind(this)
+    savePref          = this.savePref.bind(this)
+  }
+
+  componentDidMount(){
     console.log(`App mounted`)
-    async function fetchData(){
-      try{
-        // Load auth
-        const auth = await apiRequest('GET','/auth/info')
-        setUser({
-          name : auth.user.name,
-          role : auth.role.name
-        })
 
-        // Load prefs
-        await prefs.load()
+    this.fetchData()
+  }
 
-        // Load cameras
-        await cameras.load()
+  async fetchData(){
+    try{
+      // Load auth
+      const auth = await backend.apiRequest('GET','/auth/info')
+      this.setState({user:{
+        name : auth.user.name,
+        role : auth.role.name
+      }})
 
-      }catch(err){
-        console.error(err)
-        setError(err)
+      // Load prefs
+      await this.loadPrefs()
+
+      // Load cameras
+      await this.loadCameras()
+
+      // Reload images
+      setSelectedCamera(null)
+
+    }catch(err){
+      console.error(err)
+      this.setState({error:err})
+    }
+  }
+
+  //----------------------------------------------------------------------------
+  // CAMERAS
+  async loadCameras(){
+    // Load
+    console.log('cameras: start loading...')
+    let data = await backend.apiRequest('POST','/cameras/load_cameras',{mt:mtCameras})
+    mtCameras = data.till_mt
+    console.log('cameras:',data)
+    // Update
+    const newList = data.results
+    this.setState({cameras:newList})
+  }
+
+  setSelectedCamera(cam){
+    let newValue = this.state.selectedCamera===cam?null:cam
+    console.log(`setSelectedCamera #${cam?.id} => #${newValue?newValue.id:null}`)
+    this.setState({selectedCamera:newValue})
+  }
+
+  getSelectedCamIds(){
+    const {selectedCamera} = this.state
+    if(selectedCamera){
+      return [selectedCamera.id]
+    }else{
+      return this.state.cameras.map(item=>item.id)
+    }
+  }
+
+  //----------------------------------------------------------------------------
+  // PREFS
+  async loadPrefs(){
+    // Load
+    console.log('prefs: start loading...')
+    let data = await backend.apiRequest('POST','/prefs/load_prefs',{mt:mtPrefs})
+    //mtPrefs = data.till_mt
+    console.log('prefs:',data)
+    // Update
+    const newPrefs = {}
+    for(const pref of data.results){
+      switch(pref.id){
+          case FTP_SERVER_ID: newPrefs.ftp = pref.value; break;
+          case IP_SERVER_ID:  newPrefs.ip  = pref.value; break;
       }
     }
-    fetchData()
+    this.setState({prefs:newPrefs})
+  }
 
-  }, []);
+  async savePref(id, value){
+    let data = await backend.apiRequest('POST','/prefs/set_common_pref',
+        {id    : id, 
+         value : value})
+    console.log('savePref finished:',data)
+    // Reload prefs
+    this.loadPrefs()
+  }
 
   //-------------------------------------------------------------------
   // DIALOGS
-  const showDialog = (title, form)=>{
-    setDialog(<div className="dialog-fog">
+  showDialog(title, form){
+    this.setState({dialog:(<div className="dialog-fog">
       <div className="dialog">
           <div className="title">{title}</div>
               {form}
       </div>
-    </div>)
+    </div>) })
   }
-  const hideDialog = ()=>{setDialog(null)}
+  hideDialog(){ this.setState({dialog:null}) }
 
-  const showFtpDialog = ()=>{
-    showDialog(
+  showFtpDialog(){
+    this.showDialog(
       'Cameras FTP',
       <FormFTP 
-          ftp={prefs.ftp}
+          ftp={this.state.prefs.ftp}
           useFolder={false}
           onFinished={hideDialog}
-          onSaveAsync={prefs.saveFTP}
+          onSaveAsync={async (value)=>{savePref(FTP_SERVER_ID,value)}}
           />
     )
   }
 
-  const showIpDialog = ()=>{
-    showDialog(
+  showIpDialog(){
+    this.showDialog(
       'Image Processor FTP',
       <FormFTP 
-          ftp={prefs.ip}
+          ftp={this.state.prefs.ip}
           useFolder={true}
           onFinished={hideDialog}
-          onSaveAsync={prefs.saveIP}
+          onSaveAsync={async (value)=>{savePref(IP_SERVER_ID,value)}}
           />
     )
   }
@@ -84,48 +167,55 @@ function App() {
 
   //-------------------------------------------------------------------
   // RENDER
-  let rows = cameras.list
-    .sort((a,b)=>a.name.localeCompare(b.name))
-    .map(cam=>(<CamRow 
-        key={cam.id.toString()}
-        cam={cam}
-    />))
+  render(){
 
-  return (
-    <div className="App">
+    const {user, error, dialog, selectedCamera, cameras, prefs} = this.state;
+    console.log(`App render, selected camera:`,selectedCamera)
 
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <span className='title'>Cameras Dashboard</span>
-        {user!=null && <div className="user" >
-          <div>{user.name}</div>
-          <div>{user.role}</div>
-        </div>}
-      </header>
+    let rows = cameras
+      .sort((a,b)=>a.name.localeCompare(b.name))
+      .map(cam=>(<CamRow 
+          key={cam.id.toString()}
+          cam={cam}
+          isSelected={cam===selectedCamera}
+      />))
 
-      <aside>
-        <ConfFTP label="Cameras FTP:" data={prefs.ftp} onClick={showFtpDialog}/>
-        <ConfFTP label="IP FTP:"      data={prefs.ip}  onClick={showIpDialog}/>
-      </aside>
+    return (
+      <div className="App">
 
-      <div id="layout-list">
-        {rows}
-      </div>
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <span className='title'>Cameras Dashboard</span>
+          {user!=null && <div className="user" >
+            <div>{user.name}</div>
+            <div>{user.role}</div>
+          </div>}
+        </header>
 
-      <div id="layout-data">
-        <ImageList cameras={cameras.selected}/>
-      </div>
+        <aside>
+          <ConfFTP label="Cameras FTP:" data={prefs.ftp} onClick={showFtpDialog}/>
+          <ConfFTP label="IP FTP:"      data={prefs.ip}  onClick={showIpDialog}/>
+        </aside>
 
-      {error &&
-        <div className="error">
-          <div className="message">{error.toString()}</div>
+        <div id="layout-list">
+          {rows}
         </div>
-      }
 
-      {dialog}
+        <div id="layout-data">
+          <ImageList selectedCamera={selectedCamera}/>
+        </div>
 
-    </div>
-  );
+        {error &&
+          <div className="error">
+            <div className="message">{error.toString()}</div>
+          </div>
+        }
+
+        {dialog}
+
+      </div>
+    );
+  }
 }
 
 export default App;
