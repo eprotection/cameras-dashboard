@@ -23,7 +23,7 @@ class CamRow extends React.PureComponent{
                 <div className='details'>
                 <div><span>id:<b>{cam.id}</b></span></div>
                 <div><span>mac:<b>{cam.mac}</b></span></div>
-                <div><span>folder:<b>{cam.conf?.folder}</b></span><span>prefix:<b>{cam.conf?.prefix}</b></span></div>
+                <div><span>folder:<b>{cam.folder}</b></span><span>prefix:<b>{cam.prefix}</b></span></div>
                 <button onClick={(e)=>{e.stopPropagation();showCamEditor(cam)}}>Edit</button>
                 </div>
             </div>

@@ -8,9 +8,9 @@ const valOrEmpty = (value)=>value?value:''
 export default ({cam})=>{
     // Input
     const onChange=()=>{if(error)setError(null)}
-    const [name,   onChangeName]   = useInputState(cam.name,                     onChange);
-    const [folder, onChangeFolder] = useInputState(valOrEmpty(cam.conf?.folder), onChange);
-    const [prefix, onChangePrefix] = useInputState(valOrEmpty(cam.conf?.prefix), onChange);
+    const [name,   onChangeName]   = useInputState(cam.name,               onChange);
+    const [folder, onChangeFolder] = useInputState(valOrEmpty(cam.folder), onChange);
+    const [prefix, onChangePrefix] = useInputState(valOrEmpty(cam.prefix), onChange);
 
     // Saving state
     const [busy,  setBusy]  = useState(false)
@@ -22,9 +22,8 @@ export default ({cam})=>{
         setBusy(true)
         let newCam = {...cam}
         newCam.name = name
-        if(!newCam.conf) newCam.conf = {}
-        newCam.conf.folder = folder
-        newCam.conf.prefix = prefix
+        newCam.folder = folder
+        newCam.prefix = prefix
 
         backend.apiRequest('POST','/cameras/update_camera',newCam)
             .then(()=>{
