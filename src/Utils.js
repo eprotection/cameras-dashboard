@@ -7,6 +7,7 @@ export const formatDateTime = function(time){
     .slice(0,16).replace('T',' ') 
 }
 export const formatDate = function(time){
+    if(!time) return ''
     return new Date(time).toISOString()
     .slice(0,10)//date only
 }

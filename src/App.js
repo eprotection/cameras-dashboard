@@ -5,6 +5,7 @@ import backend from './Backend'
 import CamRow from './CamRow'
 import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
+import CamEditor from "./CamEditor"
 import ImageList from "./ImageList";
 
 export var setSelectedCamera
@@ -13,6 +14,9 @@ export var showFtpDialog
 export var showIpDialog
 export var hideDialog
 export var savePref
+export var showCamEditor
+export var onCamUpdated
+export var getCameraById
 
 var mtCameras = 0
 var mtPrefs   = 0
@@ -29,7 +33,7 @@ class App extends React.Component {
       dialog        : null,
       // Data
       cameras       : [],
-      selectedCamera: undefined,
+      selectedCameraId: undefined,
       prefs         : {}
     }
 
@@ -40,6 +44,9 @@ class App extends React.Component {
     showIpDialog      = this.showIpDialog.bind(this)
     hideDialog        = this.hideDialog.bind(this)
     savePref          = this.savePref.bind(this)
+    showCamEditor     = this.showCamEditor.bind(this)
+    onCamUpdated      = this.onCamUpdated.bind(this)
+    getCameraById     = this.getCameraById.bind(this)
   }
 
   componentDidMount(){
@@ -77,8 +84,8 @@ class App extends React.Component {
   async loadCameras(){
     // Load
     console.log('cameras: start loading...')
-    let data = await backend.apiRequest('POST','/cameras/load_cameras',{mt:mtCameras})
-    mtCameras = data.till_mt
+    let data = await backend.apiRequest('POST','/cameras/load_list',{mt:mtCameras})
+    mtCameras = data.mt
     console.log('cameras:',data)
     // Update
     const newList = data.results
@@ -86,18 +93,30 @@ class App extends React.Component {
   }
 
   setSelectedCamera(cam){
-    let newValue = this.state.selectedCamera===cam?null:cam
-    console.log(`setSelectedCamera #${cam?.id} => #${newValue?newValue.id:null}`)
-    this.setState({selectedCamera:newValue})
+    console.log(`setSelectedCamera #${cam?.id}`)
+    let newValue = this.state.selectedCameraId==(cam?.id)?null:cam.id
+    this.setState({selectedCameraId:newValue})
   }
 
   getSelectedCamIds(){
-    const {selectedCamera} = this.state
-    if(selectedCamera){
-      return [selectedCamera.id]
+    const {selectedCameraId} = this.state
+    if(selectedCameraId){
+      return [selectedCameraId]
     }else{
       return this.state.cameras.map(item=>item.id)
     }
+  }
+  getCameraById(id){
+    for(const cam of this.state.cameras)
+      if(cam.id==id) return cam
+  }
+
+  onCamUpdated(newCam){
+    let newState = {}
+    newState.cameras = this.state.cameras.map(
+      cam => cam.id==newCam.id ? newCam : cam
+    )
+    this.setState(newState)
   }
 
   //----------------------------------------------------------------------------
@@ -164,21 +183,21 @@ class App extends React.Component {
     )
   }
 
+  showCamEditor(cam){
+    this.showDialog(
+      'Camera Editor',
+      <CamEditor cam={cam}/>
+    )
+  }
+
+
 
   //-------------------------------------------------------------------
   // RENDER
   render(){
 
-    const {user, error, dialog, selectedCamera, cameras, prefs} = this.state;
-    console.log(`App render, selected camera: #${selectedCamera?.id}`)
-
-    let rows = cameras
-      .sort((a,b)=>a.name.localeCompare(b.name))
-      .map(cam=>(<CamRow 
-          key={cam.id.toString()}
-          cam={cam}
-          isSelected={cam===selectedCamera}
-      />))
+    const {user, error, dialog, selectedCameraId, cameras, prefs} = this.state;
+    console.log(`App render, selectedCameraId: ${selectedCameraId}`)
 
     return (
       <div className="App">
@@ -198,11 +217,19 @@ class App extends React.Component {
         </aside>
 
         <div id="layout-list">
-          {rows}
+          <div className="row-header">
+            <span>name</span><span>last</span><span>total</span></div>
+          {cameras
+          .sort((a,b)=>a.name.localeCompare(b.name))
+          .map(cam=>(<CamRow 
+              key={cam.id.toString()}
+              cam={cam}
+              isSelected={cam.id===selectedCameraId}
+          />))}
         </div>
 
         <div id="layout-data">
-          <ImageList selectedCamera={selectedCamera}/>
+          <ImageList selectedCameraId={selectedCameraId}/>
         </div>
 
         {error &&

@@ -9,15 +9,39 @@
     background-color: #055;
 }
 
+.row-header{
+    display: grid;
+    grid-template-columns: 3fr 5em 4em;
+    border-bottom: 1px solid #888;
+    padding-bottom: 0.3em;
+    margin-bottom: 0.3em;
+}
 .row .main{
     display: grid;
-    grid-template-columns: 1fr 2fr;
-  
+    grid-template-columns: 1fr 5em 4em;
+}
+.row .name{
+    font-size: 110%;
+    font-weight: normal;
+    color:aqua;
+}
+.row .stat{
+    font-weight: normal;
+    text-align: right;
 }
 
-.row .mac{
+.row .details  > div {
+    font-style: italic;
     font-family: monospace;
-    font-weight: bold;
-    font-size: 90%;
-    color:#ff8
 }
+.row .details  > div {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    column-gap: 2em;
+}
+.row .details  b {
+    margin-left: 0.4em;
+    font-style: normal;
+}
+

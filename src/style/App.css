@@ -58,7 +58,6 @@ header .title{
   text-align: left;
 }
 header .user{
-  font-size: 80%;
 }
 
 .error{
@@ -79,7 +78,6 @@ aside {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  font-size: 80%;
   padding: 0.2em 0.5em;
 }
 aside>div{

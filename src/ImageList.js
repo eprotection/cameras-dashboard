@@ -1,7 +1,7 @@
 import React from "react"
 import {apiRequest} from './Backend'
 import {formatDateTime} from './Utils'
-import{getSelectedCamIds} from './App'
+import{getSelectedCamIds, getCameraById} from './App'
 import Cell from "./Cell"
 
 
@@ -25,9 +25,9 @@ class ImageList extends React.Component{
     shouldComponentUpdate(nextProps, nextState) {
         // props.onClick - GENERATES DIFFERENCE!
         
-        // props.selectedCamera changed?
-        if (this.props.selectedCamera !== nextProps.selectedCamera){
-            console.log(`ImageList selectedCamera changed => skip update, start loading`)
+        // props.selectedCameraId changed?
+        if (this.props.selectedCameraId !== nextProps.selectedCameraId){
+            console.log(`ImageList selectedCameraId changed => skip update, start loading`)
             // Reload images
             this.loadData(true) // converts prop change to state change
         }
@@ -80,13 +80,13 @@ class ImageList extends React.Component{
     //-----------------------------------------------------------------------------
     // RENDER
     render(){
-        const {selectedCamera} = this.props
-        console.log(`ImageList render, selectedCamera: #${selectedCamera?.id}`)
+        const {selectedCameraId} = this.props
+        console.log(`ImageList render, selectedCameraId: #${selectedCameraId}`)
         //let items = 
-
+ 
         return (
         <div>
-            <h3>Images from: {selectedCamera?selectedCamera.name:'ALL CAMERAS'}</h3>
+            <h3>Images from: {selectedCameraId ? getCameraById(selectedCameraId)?.name:'ALL CAMERAS'}</h3>
 
             {this.state.error && 
             <div className="message"><span className="err">{this.state.error}</span></div>}
