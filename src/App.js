@@ -2,13 +2,14 @@ import React,{useState,useEffect} from "react"
 import logo from './logo.svg';
 import './style/App.css';
 import backend from './Backend'
-import CamRow from './CamRow'
 import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
 import CamEditor from "./CamEditor"
-import ImageList from "./ImageList";
+import CamList from "./CamList"
+import ImageList from "./ImageList"
 
-export var setSelectedCamera
+
+export var setSelCamID
 export var getSelectedCamIds
 export var showFtpDialog
 export var showIpDialog
@@ -33,12 +34,12 @@ class App extends React.Component {
       dialog        : null,
       // Data
       cameras       : [],
-      selectedCameraId: undefined,
+      selCamID: undefined,
       prefs         : {}
     }
 
     // Interface
-    setSelectedCamera = this.setSelectedCamera.bind(this)
+    setSelCamID       = this.setSelCamID.bind(this)
     getSelectedCamIds = this.getSelectedCamIds.bind(this)
     showFtpDialog     = this.showFtpDialog.bind(this)
     showIpDialog      = this.showIpDialog.bind(this)
@@ -71,7 +72,7 @@ class App extends React.Component {
       await this.loadCameras()
 
       // Reload images
-      setSelectedCamera(null)
+      setSelCamID('all')
 
     }catch(err){
       console.error(err)
@@ -92,18 +93,18 @@ class App extends React.Component {
     this.setState({cameras:newList})
   }
 
-  setSelectedCamera(cam){
-    console.log(`setSelectedCamera #${cam?.id}`)
-    let newValue = this.state.selectedCameraId==(cam?.id)?null:cam.id
-    this.setState({selectedCameraId:newValue})
+  setSelCamID(id){
+    console.log(`setSelCamID ${id}`)
+    if(this.state.selCamID==id) return
+    this.setState({selCamID:id})
   }
 
   getSelectedCamIds(){
-    const {selectedCameraId} = this.state
-    if(selectedCameraId){
-      return [selectedCameraId]
-    }else{
+    const {selCamID} = this.state
+    if(selCamID=='all'){
       return this.state.cameras.map(item=>item.id)
+    }else{
+      return [selCamID]
     }
   }
   getCameraById(id){
@@ -196,8 +197,8 @@ class App extends React.Component {
   // RENDER
   render(){
 
-    const {user, error, dialog, selectedCameraId, cameras, prefs} = this.state;
-    console.log(`App render, selectedCameraId: ${selectedCameraId}`)
+    const {user, error, dialog, selCamID, cameras, prefs} = this.state;
+    console.log(`App render, selCamID: ${selCamID}`)
 
     return (
       <div className="App">
@@ -217,19 +218,11 @@ class App extends React.Component {
         </aside>
 
         <div id="layout-list">
-          <div className="row-header">
-            <span>name</span><span>last</span><span>total</span></div>
-          {cameras
-          .sort((a,b)=>a.name.localeCompare(b.name))
-          .map(cam=>(<CamRow 
-              key={cam.id.toString()}
-              cam={cam}
-              isSelected={cam.id===selectedCameraId}
-          />))}
+          <CamList cameras={cameras} selCamID={selCamID} />
         </div>
 
         <div id="layout-data">
-          <ImageList selectedCameraId={selectedCameraId}/>
+          <ImageList selCamID={selCamID}/>
         </div>
 
         {error &&

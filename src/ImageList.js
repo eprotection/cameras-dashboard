@@ -25,9 +25,9 @@ class ImageList extends React.Component{
     shouldComponentUpdate(nextProps, nextState) {
         // props.onClick - GENERATES DIFFERENCE!
         
-        // props.selectedCameraId changed?
-        if (this.props.selectedCameraId !== nextProps.selectedCameraId){
-            console.log(`ImageList selectedCameraId changed => skip update, start loading`)
+        // props.selCamID changed?
+        if (this.props.selCamID !== nextProps.selCamID){
+            console.log(`ImageList selCamID changed => skip update, start loading`)
             // Reload images
             this.loadData(true) // converts prop change to state change
         }
@@ -80,13 +80,13 @@ class ImageList extends React.Component{
     //-----------------------------------------------------------------------------
     // RENDER
     render(){
-        const {selectedCameraId} = this.props
-        console.log(`ImageList render, selectedCameraId: #${selectedCameraId}`)
+        const {selCamID} = this.props
+        console.log(`ImageList render, selCamID: #${selCamID}`)
         //let items = 
  
         return (
         <div>
-            <h3>Images from: {selectedCameraId ? getCameraById(selectedCameraId)?.name:'ALL CAMERAS'}</h3>
+            {/* <h3>Images from: {selCamID ? getCameraById(selCamID)?.name:'ALL CAMERAS'}</h3> */}
 
             {this.state.error && 
             <div className="message"><span className="err">{this.state.error}</span></div>}
