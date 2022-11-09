@@ -5,7 +5,9 @@ import './style/Cell.css';
 
 const STATUS = new Map([
     [ 0, ''],
-    [10, 'original received']
+    [10, 'original received'],
+    [20, 'under processing'],
+    [30, 'classified']
 ])
 
 class Cell extends React.PureComponent{
@@ -17,7 +19,6 @@ class Cell extends React.PureComponent{
         <div>{formatDateTime(data.time)}</div>
         <div>{data.width}x{data.height}</div>
         <div>{STATUS.get(data.status)}</div>
-
         </div>
     }
 }

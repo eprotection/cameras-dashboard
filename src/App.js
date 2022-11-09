@@ -18,17 +18,27 @@ export var savePref
 export var showCamEditor
 export var onCamUpdated
 export var getCameraById
+export var toggleTheme
 
 var mtCameras = 0
 var mtPrefs   = 0
 const FTP_SERVER_ID  = 2021
 const IP_SERVER_ID   = 2025
 
+const loadTheme=()=>{
+  let stored=window.localStorage.getItem('theme');
+  return stored?stored:'dark'
+}
+const saveTheme=(value)=>{
+  window.localStorage.setItem('theme',value)
+}
+
 
 class App extends React.Component {
   constructor(props){
     super(props)
     this.state={
+      theme         : loadTheme(),
       user          : null,
       error         : null,
       dialog        : null,
@@ -48,6 +58,7 @@ class App extends React.Component {
     showCamEditor     = this.showCamEditor.bind(this)
     onCamUpdated      = this.onCamUpdated.bind(this)
     getCameraById     = this.getCameraById.bind(this)
+    toggleTheme       = this.toggleTheme.bind(this)
   }
 
   componentDidMount(){
@@ -78,6 +89,12 @@ class App extends React.Component {
       console.error(err)
       this.setState({error:err})
     }
+  }
+
+  toggleTheme(){
+    const newTheme = this.state.theme=='dark' ? 'light' : 'dark'
+    saveTheme(newTheme)
+    this.setState({theme:newTheme}) 
   }
 
   //----------------------------------------------------------------------------
@@ -201,7 +218,7 @@ class App extends React.Component {
     console.log(`App render, selCamID: ${selCamID}`)
 
     return (
-      <div className="App">
+      <div className={`App ${this.state.theme}`}>
 
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -210,6 +227,9 @@ class App extends React.Component {
             <div>{user.name}</div>
             <div>{user.role}</div>
           </div>}
+          <div><span className="btn clk" onClick={toggleTheme}>
+            Set {this.state.theme=='dark'?'light':'dark'} theme
+          </span></div>
         </header>
 
         <aside>
@@ -226,7 +246,7 @@ class App extends React.Component {
         </div>
 
         {error &&
-          <div className="error">
+          <div className="fatal-error">
             <div className="message">{error.toString()}</div>
           </div>
         }
