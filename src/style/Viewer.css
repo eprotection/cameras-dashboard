@@ -1,0 +1,28 @@
+.viewer{
+    position:fixed;
+    top:0px;     left:0px;
+    bottom: 0px; right:0px;
+    background: #000;
+}
+.icon.close {
+    position:absolute;
+    top:0em; right:0em;
+    width:3em; height:3em;
+    background-image: url(/public/close.svg);
+    background-color: #00000088;
+}
+.icon.close:hover {
+    background-color: #ffff0088;
+}
+
+.viewer .container {
+    position:absolute;
+    top:0em; left:0em;
+    bottom:0em; right:0em;
+    overflow:auto;
+}
+.viewer img{
+    width:100%;
+    height: 100%;
+    object-fit: contain;
+}

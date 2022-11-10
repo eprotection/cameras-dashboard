@@ -3,10 +3,16 @@ import {apiRequest} from './Backend'
 import {formatDateTime} from './Utils'
 import{getSelectedCamIds, getCameraById} from './App'
 import Cell from "./Cell"
+import Viewer from "./Viewer"
+import './style/Viewer.css';
+
+
+export var showViewer
+export var hideViewer
 
 
 const MIN_LOADING_TIME = 700
-const PAGE_SIZE = 5
+const PAGE_SIZE = 10
 
 class ImageList extends React.Component{
     constructor(props){
@@ -17,10 +23,15 @@ class ImageList extends React.Component{
             images  : [],
             error   : null,
             loading : false,
-            hasMore : false
+            hasMore : false,
+            openImg : null
         }
-
+        showViewer=this.showViewer.bind(this)
+        hideViewer=this.hideViewer.bind(this)
     }
+
+    showViewer(image){this.setState({openImg:image})}
+    hideViewer()     {this.setState({openImg:null})}
 
     shouldComponentUpdate(nextProps, nextState) {
         // props.onClick - GENERATES DIFFERENCE!
@@ -84,7 +95,7 @@ class ImageList extends React.Component{
         console.log(`ImageList render, selCamID: #${selCamID}`)
         //let items = 
  
-        return (
+        return (<>
         <div>
             {/* <h3>Images from: {selCamID ? getCameraById(selCamID)?.name:'ALL CAMERAS'}</h3> */}
 
@@ -108,7 +119,10 @@ class ImageList extends React.Component{
                     <span className="btn clk" onClick={()=>{this.loadData()}}>show more</span>
                 </div>}
             </div>
-        </div>)
+        </div>
+        {this.state.openImg && 
+            <Viewer image={this.state.openImg}/>}
+        </>)
     }
 }
 export default ImageList;

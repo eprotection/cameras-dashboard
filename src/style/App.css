@@ -9,18 +9,23 @@
   pointer-events: none;
 }
 
-.dark  .clk{background: #333;}
-.light .clk{background: #eee;}
+.dark  .clk{background-color: #333;}
+.light .clk{background-color: #eee;}
 
 .clk:hover{
   cursor:pointer;
-  background: #ffff0055;
+  background-color: #ffff0077;
 }
 .btn{
   display: inline-block;
   border-radius: 5px;
   padding: 0.5em 1em;
   margin: 0.5em 1em;
+}
+.icon{
+  background-size:     cover;                  
+  background-repeat:   no-repeat;
+  background-position: center center;          
 }
 .bar{
   display:flex;
