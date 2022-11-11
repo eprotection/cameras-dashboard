@@ -30,6 +30,10 @@
     text-align: right;
 }
 
+.row .details{
+    position: relative;
+}
+
 .row .details  > div {
     font-style: italic;
     font-family: monospace;
@@ -44,4 +48,14 @@
     margin-left: 0.4em;
     font-style: normal;
 }
+.row .details .icon.edit {
+    position:absolute;
+    top:0.5em; right:0em;
+    width:2em; height:2em;
+}
+.dark  .row .details .icon.edit {background-image: url(/public/edit-white.svg);}
+.light .row .details .icon.edit {background-image: url(/public/edit-black.svg);}
+
+
+
 

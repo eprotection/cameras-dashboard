@@ -23,9 +23,11 @@
   margin: 0.5em 1em;
 }
 .icon{
+  display: block;
   background-size:     cover;                  
   background-repeat:   no-repeat;
-  background-position: center center;          
+  background-position: center center;     
+  border-radius: 0.5em;     
 }
 .bar{
   display:flex;

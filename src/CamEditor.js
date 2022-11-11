@@ -44,8 +44,6 @@ export default ({cam})=>{
     return (<form>
         <div className="input-table">
             <i>ID</i><b>{cam.id}</b>
-            <i>MAC</i><b>{cam.mac}</b>            
-            <i>fetch type</i><b>{cam.fetch_type}</b>            
             <i>Name</i>  <input type='text' value={name}   onChange={onChangeName}/>
             <i>Folder</i><input type='text' value={folder} onChange={onChangeFolder}/>
             <i>Prefix</i><input type='text' value={prefix} onChange={onChangePrefix}/>

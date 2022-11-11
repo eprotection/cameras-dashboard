@@ -1,5 +1,5 @@
 import React from 'react';
-import './style/Row.css';
+import './style/Camera.css';
 import {setSelCamID,showCamEditor} from "./App"
 import {formatDate} from "./Utils"
 
@@ -21,9 +21,9 @@ class CamRow extends React.PureComponent{
                 {cam.id!='all' &&
                 <div className='details'>
                 <div><span>id:<b>{cam.id}</b></span></div>
-                <div><span>mac:<b>{cam.mac}</b></span></div>
-                <div><span>folder:<b>{cam.folder}</b></span><span>prefix:<b>{cam.prefix}</b></span></div>
-                <button onClick={(e)=>{e.stopPropagation();showCamEditor(cam)}}>Edit</button>
+                <div><span>folder:<b>{cam.folder}</b></span></div>
+                <div><span>prefix:<b>{cam.prefix}</b></span></div>
+                <span className="clk icon edit" onClick={(e)=>{e.stopPropagation();showCamEditor(cam)}}></span>
                 </div>}
             </div>
         )

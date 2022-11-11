@@ -2,7 +2,7 @@ import React from "react"
 import {apiRequest} from './Backend'
 import {formatDateTime} from './Utils'
 import{getSelectedCamIds, getCameraById} from './App'
-import Cell from "./Cell"
+import Cell from "./ImageCell"
 import Viewer from "./Viewer"
 import './style/Viewer.css';
 
@@ -106,7 +106,8 @@ class ImageList extends React.Component{
                 {this.state.images.map(item=>
                     <Cell 
                         key={`${item.id}-${item.time}`} 
-                        data={item}/>
+                        data={item}
+                        showCamera={selCamID=='all'}/>
                 )}
 
                 {this.state.loading && 

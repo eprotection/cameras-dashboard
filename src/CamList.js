@@ -1,5 +1,6 @@
 import React from "react"
 import CamRow from './CamRow'
+import './style/Camera.css';
 
 export default class CamList extends React.PureComponent{
 
