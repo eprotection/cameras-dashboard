@@ -18,7 +18,7 @@ class Cell extends React.PureComponent{
         console.log(`Cell render ${data.file}`)
         return <div className="cell clk"
         onClick={()=>showViewer(data)}>
-        <img src={`${backend.getApiUrl()}/cam/${data.id}/${data.file}`} />
+        <img src={`${backend.getApiUrl()}/cam_prv/${data.id}/${data.file}`} />
         {showCamera && <div>{getCameraById(data.id)?.name}</div>}
         <div>{formatDateTime(data.time)}</div>
         <div>{data.width}x{data.height}</div>
