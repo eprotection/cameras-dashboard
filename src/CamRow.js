@@ -6,9 +6,9 @@ import {formatDate} from "./Utils"
 class CamRow extends React.PureComponent{
     render(){
 
-        const { cam, isSelected } = this.props
+        const { cam, isSelected, isEditable } = this.props
 
-        console.log(`CamRow render #${cam.id} ${cam.name} ${isSelected}`)
+        console.log(`CamRow render #${cam.id} ${cam.name} isSelected:${isSelected} isEditable:${isEditable}`)
 
         return (
             <div className={`row clk ${isSelected?'selected':''}`}
@@ -23,7 +23,9 @@ class CamRow extends React.PureComponent{
                 <div><span>id:<b>{cam.id}</b></span></div>
                 <div><span>folder:<b>{cam.folder}</b></span></div>
                 <div><span>prefix:<b>{cam.prefix}</b></span></div>
-                <span className="clk icon edit" onClick={(e)=>{e.stopPropagation();showCamEditor(cam)}}></span>
+                {isEditable && 
+                    <span className="clk icon edit" 
+                        onClick={(e)=>{e.stopPropagation();showCamEditor(cam)}}></span>}
                 </div>}
             </div>
         )

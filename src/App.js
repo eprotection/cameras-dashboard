@@ -22,6 +22,7 @@ export var toggleTheme
 
 var mtCameras = 0
 var mtPrefs   = 0
+const ALLOW_PUBLIC_ID= 2005
 const FTP_SERVER_ID  = 2021
 const IP_SERVER_ID   = 2025
 
@@ -39,6 +40,7 @@ class App extends React.Component {
     super(props)
     this.state={
       theme         : loadTheme(),
+      wsname        : null,
       user          : null,
       error         : null,
       dialog        : null,
@@ -69,15 +71,24 @@ class App extends React.Component {
 
   async fetchData(){
     try{
-      // Load auth
-      const auth = await backend.apiRequest('GET','/auth/info')
-      this.setState({user:{
-        name : auth.user.name,
-        role : auth.role.name
-      }})
+      // Load ws info
+      const ws = await backend.apiRequest('GET','/')
+      this.setState({wsname:ws.name})
 
-      // Load prefs
+      // Load prefs (before auth)
       await this.loadPrefs()
+
+      // Load auth
+      try{
+        const auth = await backend.apiRequest('GET','/auth/info')
+        this.setState({user:{
+          name : auth.user.name,
+          role : auth.role.name
+        }})
+      }catch(e){
+        if(!this.state.prefs.allowPublic) throw e
+      }
+
 
       // Load cameras
       await this.loadCameras()
@@ -149,8 +160,9 @@ class App extends React.Component {
     const newPrefs = {}
     for(const pref of data.results){
       switch(pref.id){
-          case FTP_SERVER_ID: newPrefs.ftp = pref.value; break;
-          case IP_SERVER_ID:  newPrefs.ip  = pref.value; break;
+          case ALLOW_PUBLIC_ID: newPrefs.allowPublic = pref.value; break;
+          case FTP_SERVER_ID:   newPrefs.ftp         = pref.value; break;
+          case IP_SERVER_ID:    newPrefs.ip          = pref.value; break;
       }
     }
     this.setState({prefs:newPrefs})
@@ -184,7 +196,7 @@ class App extends React.Component {
           ftp={this.state.prefs.ftp}
           useFolder={false}
           onFinished={hideDialog}
-          onSaveAsync={async (value)=>{savePref(FTP_SERVER_ID,value)}}
+          onSaveAsync={async (value)=>{await savePref(FTP_SERVER_ID,value)}}
           />
     )
   }
@@ -196,7 +208,7 @@ class App extends React.Component {
           ftp={this.state.prefs.ip}
           useFolder={true}
           onFinished={hideDialog}
-          onSaveAsync={async (value)=>{savePref(IP_SERVER_ID,value)}}
+          onSaveAsync={async (value)=>{await savePref(IP_SERVER_ID,value)}}
           />
     )
   }
@@ -208,21 +220,19 @@ class App extends React.Component {
     )
   }
 
-
-
   //-------------------------------------------------------------------
   // RENDER
   render(){
 
-    const {user, error, dialog, selCamID, cameras, prefs} = this.state;
-    console.log(`App render, selCamID: ${selCamID}`)
+    const {wsname, user, error, dialog, selCamID, cameras, prefs} = this.state;
+    console.log(`App render, selCamID: ${selCamID} user: ${user}`)
 
     return (
       <div className={`App ${this.state.theme}`}>
 
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <span className='title'>Cameras Dashboard</span>
+          <span className='title'>{wsname}</span>
           {user!=null && <div className="user" >
             <div>{user.name}</div>
             <div>{user.role}</div>
@@ -233,12 +243,12 @@ class App extends React.Component {
         </header>
 
         <aside>
-          <ConfFTP label="Cameras FTP:" data={prefs.ftp} onClick={showFtpDialog}/>
-          <ConfFTP label="IP FTP:"      data={prefs.ip}  onClick={showIpDialog}/>
+          <ConfFTP label="Cameras FTP:" data={prefs.ftp} onClick={user?showFtpDialog:null}/>
+          <ConfFTP label="IP FTP:"      data={prefs.ip}  onClick={user?showIpDialog:null}/>
         </aside>
 
         <div id="layout-list">
-          <CamList cameras={cameras} selCamID={selCamID} />
+          <CamList cameras={cameras} selCamID={selCamID} isEditable={user?true:false}/>
         </div>
 
         <div id="layout-data">

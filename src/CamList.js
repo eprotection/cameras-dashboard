@@ -5,8 +5,8 @@ import './style/Camera.css';
 export default class CamList extends React.PureComponent{
 
     render(){
-        const {cameras, selCamID} = this.props
-        console.log(`CamList render`)
+        const {cameras, selCamID, isEditable} = this.props
+        console.log(`CamList render  isEditable:${isEditable}`)
 
         // Calculate total a-la cam
         let total = {
@@ -32,6 +32,7 @@ export default class CamList extends React.PureComponent{
                 key={cam.id.toString()}
                 cam={cam}
                 isSelected={cam.id==selCamID}
+                isEditable={isEditable}
             />
         })
             

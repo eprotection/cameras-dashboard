@@ -15,20 +15,22 @@ import React from "react";
 
 class ConfFTP extends React.Component{
 
+    // Just for illustration
     shouldComponentUpdate(nextProps, nextState) {
         //console.log(`ConfFTP shouldComponentUpdate ${this.props.onClick === nextProps.onClick}`,this.props, this.nextProps)
         // onClick - GENERATES DIFFERENCE!
         if (this.props.data !== nextProps.data) return true;
+        if (this.props.onClick !== nextProps.onClick) return true;
         return false;
     }
 
     render(){
         const {label,data,onClick} = this.props
     
-        console.log(`ConfFTP render, ${data?`${data.user}@${data.host}`:"null"}`)
+        console.log(`ConfFTP render, ${data?`${data.user}@${data.host}`:"null"}  onClick:${onClick}`)
     
         return (<div>
-                {label}<span className="ftp clk"
+                {label}<span className={onClick?"ftp clk":"ftp"}
                     onClick={onClick}>
                         {data?`${data.user}@${data.host}`:"[user@host]"}
                     </span>
