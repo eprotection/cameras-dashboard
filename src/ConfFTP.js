@@ -25,16 +25,15 @@ class ConfFTP extends React.Component{
     }
 
     render(){
-        const {label,data,onClick} = this.props
+        const {data,onClick} = this.props
     
         console.log(`ConfFTP render, ${data?`${data.user}@${data.host}`:"null"}  onClick:${onClick}`)
     
-        return (<div>
-                {label}<span className={onClick?"ftp clk":"ftp"}
-                    onClick={onClick}>
-                        {data?`${data.user}@${data.host}`:"[user@host]"}
-                    </span>
-            </div>)
+        return (
+            <b className={onClick?"ftp clk":"ftp"}
+                onClick={onClick}>
+                {data?`${data.user}@${data.host}`:"[user@host]"}
+            </b>)
     }
 }
 export default ConfFTP;

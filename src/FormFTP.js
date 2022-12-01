@@ -49,11 +49,11 @@ const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
     <form>
 
         <div className="input-table">
-            <i>User</i>{renderTextInput('user')}
-            <i>Host</i>{renderTextInput('host')}
-            <i>Pass</i>{renderTextInput('password')}
+            <div><i>User</i>{renderTextInput('user')}</div>
+            <div><i>Host</i>{renderTextInput('host')}</div>
+            <div><i>Pass</i>{renderTextInput('password')}</div>
         {useFolder&&
-            <><i>Folder</i>{renderTextInput('folder')}</>}
+            <div><i>Folder</i>{renderTextInput('folder')}</div>}
         </div>
 
         <div>

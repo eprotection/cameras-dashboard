@@ -28,7 +28,11 @@
   background-repeat:   no-repeat;
   background-position: center center;     
   border-radius: 0.5em;     
+  width:2em; height:2em;
 }
+.dark  .icon.gear {background-image: url(/public/gear-white.svg);}
+.light .icon.gear {background-image: url(/public/gear-black.svg);}
+
 .bar{
   display:flex;
   flex-direction: row;
@@ -48,16 +52,10 @@
 form{
   margin: 1em;
 }
-form input{
-  margin-bottom: 1em;
-  margin-left: 0.5em;
-}
-
-
 
 header {
-  display: grid;
-  grid-template-columns: 3em 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0.2em;
 }
@@ -80,19 +78,6 @@ header .user{
   left: 3em; right: 3em;
   top: 50%;
   transform: translateY(-50%);
-}
-
-aside {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding: 0.2em 0.5em;
-}
-aside>div{
-  margin-right: 2em;
-}
-aside .ftp{
-  padding: 0.2em 1em;
 }
 
 .dialog-fog{
@@ -118,13 +103,17 @@ aside .ftp{
 .dialog .message{
   min-height: 3em;
 }
-.dialog .i{
-  display:inline-block;
-  width:5em;
-}
-.dialog .input-table{
+.dialog .input-table > div{
   display: grid;
   grid-template-columns: 1fr 2fr;
+  margin: 1em 0em;
+}
+.dialog .input-table i{
+  padding: 0.5em;
+}
+.dialog .input-table b{
+  font-weight: normal;
+  padding: 0.5em;
 }
 
 

@@ -2,6 +2,7 @@ import React,{useState,useEffect} from "react"
 import logo from './logo.svg';
 import './style/App.css';
 import backend from './Backend'
+import Settings from "./Settings";
 import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
 import CamEditor from "./CamEditor"
@@ -14,6 +15,8 @@ export var getSelectedCamIds
 export var showFtpDialog
 export var showIpDialog
 export var hideDialog
+export var showSettings
+export var hideSettings
 export var savePref
 export var showCamEditor
 export var onCamUpdated
@@ -43,6 +46,7 @@ class App extends React.Component {
       wsname        : null,
       user          : null,
       error         : null,
+      settings      : false,
       dialog        : null,
       // Data
       cameras       : [],
@@ -56,6 +60,8 @@ class App extends React.Component {
     showFtpDialog     = this.showFtpDialog.bind(this)
     showIpDialog      = this.showIpDialog.bind(this)
     hideDialog        = this.hideDialog.bind(this)
+    hideSettings      = this.hideSettings.bind(this)
+    hideSettings      = this.hideSettings.bind(this)
     savePref          = this.savePref.bind(this)
     showCamEditor     = this.showCamEditor.bind(this)
     onCamUpdated      = this.onCamUpdated.bind(this)
@@ -187,7 +193,8 @@ class App extends React.Component {
       </div>
     </div>) })
   }
-  hideDialog(){ this.setState({dialog:null}) }
+  hideDialog()  { this.setState({dialog:null}) }
+  hideSettings(){ this.setState({settings:false}) }
 
   showFtpDialog(){
     this.showDialog(
@@ -224,7 +231,7 @@ class App extends React.Component {
   // RENDER
   render(){
 
-    const {wsname, user, error, dialog, selCamID, cameras, prefs} = this.state;
+    const {wsname, user, error,settings, dialog, selCamID, cameras, prefs} = this.state;
     console.log(`App render, selCamID: ${selCamID} user: ${user}`)
 
     return (
@@ -233,19 +240,15 @@ class App extends React.Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <span className='title'>{wsname}</span>
-          {user!=null && <div className="user" >
-            <div>{user.name}</div>
-            <div>{user.role}</div>
-          </div>}
-          <div><span className="btn clk" onClick={toggleTheme}>
+          <div className="user" >
+            <div>{user?user.name:"Guest"}</div>
+            <div>{user?.role}</div>
+          </div>
+          <span className="btn clk" onClick={toggleTheme}>
             Set {this.state.theme=='dark'?'light':'dark'} theme
-          </span></div>
+          </span>
+          <span className="clk icon gear" onClick={()=>this.setState({settings:true})}></span>
         </header>
-
-        <aside>
-          <ConfFTP label="Cameras FTP:" data={prefs.ftp} onClick={user?showFtpDialog:null}/>
-          <ConfFTP label="IP FTP:"      data={prefs.ip}  onClick={user?showIpDialog:null}/>
-        </aside>
 
         <div id="layout-list">
           <CamList cameras={cameras} selCamID={selCamID} isEditable={user?true:false}/>
@@ -256,9 +259,16 @@ class App extends React.Component {
         </div>
 
         {error &&
-          <div className="fatal-error">
-            <div className="message">{error.toString()}</div>
-          </div>
+        <div className="fatal-error">
+          <div className="message">{error.toString()}</div>
+        </div>
+        }
+
+        {settings && 
+        <Settings>
+          <div><i>Cameras FTP:</i><ConfFTP data={prefs.ftp} onClick={user?showFtpDialog:null}/></div>
+          <div><i>IP FTP:</i><ConfFTP data={prefs.ip}  onClick={user?showIpDialog:null}/></div>
+        </Settings>
         }
 
         {dialog}
