@@ -5,10 +5,12 @@ import{getSelectedCamIds, getCameraById} from './App'
 import Cell from "./ImageCell"
 import Viewer from "./Viewer"
 import './style/Viewer.css';
+import Selection from "./Selection"
 
 
 export var showViewer
 export var hideViewer
+export var selectImage
 
 
 const MIN_LOADING_TIME = 700
@@ -24,10 +26,12 @@ class ImageList extends React.Component{
             error   : null,
             loading : false,
             hasMore : false,
-            openImg : null
+            openImg : null,
+            selected: new Set()
         }
         showViewer=this.showViewer.bind(this)
         hideViewer=this.hideViewer.bind(this)
+        selectImage=this.selectImage.bind(this)
     }
 
     showViewer(image){this.setState({openImg:image})}
@@ -87,11 +91,26 @@ class ImageList extends React.Component{
 
         })
     }
+    //-----------------------------------------------------------------------------
+    // SELECTION
+    selectImage(image){
+        const {selected} = this.state 
+        if(selected.has(image)) 
+            selected.delete(image)
+        else 
+            selected.add(image)
+        this.setState({})
+    }
+    clearSelection(){
+        this.state.selected.clear()
+        this.setState({})
+    }
 
     //-----------------------------------------------------------------------------
     // RENDER
     render(){
         const {selCamID} = this.props
+        const {selected,openImg} = this.state
         console.log(`ImageList render, selCamID: #${selCamID}`)
         //let items = 
  
@@ -102,12 +121,13 @@ class ImageList extends React.Component{
             {this.state.error && 
             <div className="message"><span className="err">{this.state.error}</span></div>}
             
-            <div className="cell-container">
+            <div className={"cell-container"+(selected.size>0?" select-mode":"")}>
                 {this.state.images.map(item=>
                     <Cell 
                         key={`${item.id}-${item.time}`} 
                         data={item}
-                        showCamera={selCamID=='all'}/>
+                        showCamera={selCamID=='all'}
+                        isSelected={selected.has(item)}/>
                 )}
 
                 {this.state.loading && 
@@ -121,8 +141,11 @@ class ImageList extends React.Component{
                 </div>}
             </div>
         </div>
-        {this.state.openImg && 
-            <Viewer image={this.state.openImg}/>}
+        {selected.size>0 && 
+            <Selection size={selected.size} onClear={()=>this.clearSelection()}/>
+        }
+        {openImg && 
+            <Viewer image={openImg}/>}
         </>)
     }
 }

@@ -18,6 +18,7 @@
     padding: 0.5em;
     border-radius: 5px;
     font-family: monospace;
+    position: relative;
 }
 .cell img{
     display:block;
@@ -32,3 +33,19 @@
     vertical-align: middle;
     display: table-cell;
 }
+.cell .select{
+    position: absolute;
+    top: 1em; left: 1em;
+    width: 2em; height: 2em;
+    background-size:     cover;                  
+    background-repeat:   no-repeat;
+    background-position: center center;       
+    background-color: white;
+    border: 1px solid black;
+    display: none;
+    cursor: pointer;
+}
+.cell .select.checked{background-image: url(/public/check.svg);}
+
+.select-mode .cell .select{display: block;}
+.cell:hover .select{display: block;}

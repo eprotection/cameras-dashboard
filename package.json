@@ -1,6 +1,6 @@
 {
   "name": "cameras-dashboard",
-  "version": "1.21201.0",
+  "version": "1.21203.0",
   "private": true,
   "homepage": ".",
   "dependencies": {

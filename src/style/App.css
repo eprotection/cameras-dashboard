@@ -116,4 +116,18 @@ header .user{
   padding: 0.5em;
 }
 
+/* SELECTION */
+.selection{
+  position: fixed;
+  top:  0em;
+  left: 3em;
+  right: 3em;
+  height: 3em;
+  border: 1px solid;
+  border-top: none;
+  border-bottom-right-radius: 1em;
+  border-bottom-left-radius:  1em;
+}
+.dark  .selection {background: #333;border-color: #fff;}
+.light .selection {background: #ddd;border-color: #000;}
 
