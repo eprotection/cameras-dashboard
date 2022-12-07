@@ -30,8 +30,10 @@
   border-radius: 0.5em;     
   width:2em; height:2em;
 }
-.dark  .icon.gear {background-image: url(/public/gear-white.svg);}
-.light .icon.gear {background-image: url(/public/gear-black.svg);}
+.dark  .icon.gear  {background-image: url(/public/gear-white.svg);}
+.light .icon.gear  {background-image: url(/public/gear-black.svg);}
+.dark  .icon.close {background-image: url(/public/close-white.svg);}
+.light .icon.close {background-image: url(/public/close-black.svg);}
 
 .bar{
   display:flex;
@@ -127,7 +129,16 @@ header .user{
   border-top: none;
   border-bottom-right-radius: 1em;
   border-bottom-left-radius:  1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 3em;
 }
 .dark  .selection {background: #333;border-color: #fff;}
 .light .selection {background: #ddd;border-color: #000;}
-
+.selection .icon.close {
+  position:absolute;
+  top:0.5em; right:0.5em;
+  width:2em; height:2em;
+}

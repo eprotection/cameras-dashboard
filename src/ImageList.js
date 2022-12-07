@@ -13,7 +13,7 @@ export var hideViewer
 export var selectImage
 
 
-const MIN_LOADING_TIME = 700
+const MIN_LOADING_TIME = 500
 const PAGE_SIZE = 10
 
 class ImageList extends React.Component{
@@ -32,6 +32,8 @@ class ImageList extends React.Component{
         showViewer=this.showViewer.bind(this)
         hideViewer=this.hideViewer.bind(this)
         selectImage=this.selectImage.bind(this)
+        this.clearSelection=this.clearSelection.bind(this)
+        this.deleteSelected=this.deleteSelected.bind(this)
     }
 
     showViewer(image){this.setState({openImg:image})}
@@ -101,9 +103,41 @@ class ImageList extends React.Component{
             selected.add(image)
         this.setState({})
     }
-    clearSelection(){
+    clearSelection(e){
+        e.stopPropagation();
         this.state.selected.clear()
         this.setState({})
+    }
+    deleteSelected(e){
+        e.stopPropagation();
+        const {selected} = this.state
+
+        // Confirm
+        if(!window.confirm('Delete selected images?')) return
+
+        // Prepare data
+        let keys = []
+        for(const image of selected.values()){
+            keys.push({id:image.id, time:image.time})
+        }
+
+        // SEND REQUEST
+        apiRequest('POST','/cameras/remove_images',{
+            keys : keys
+        })
+        .then(data=>{
+            console.log('ImageList remove_images success')
+            // Remove the images directly
+            const images = this.state.images.filter(image=>!selected.has(image))
+            // Clear selection
+            selected.clear()
+            // Update state
+            this.setState({images})    
+        })
+        .catch(error=>{
+            console.log('ImageList remove_images error',error)
+            window.alert(error)
+        })
     }
 
     //-----------------------------------------------------------------------------
@@ -142,7 +176,10 @@ class ImageList extends React.Component{
             </div>
         </div>
         {selected.size>0 && 
-            <Selection size={selected.size} onClear={()=>this.clearSelection()}/>
+            <Selection 
+                size={selected.size}
+                onClear ={this.clearSelection}
+                onDelete={this.deleteSelected}/>
         }
         {openImg && 
             <Viewer image={openImg}/>}

@@ -4,14 +4,14 @@
     bottom: 0px; right:0px;
     background: #000;
 }
-.icon.close {
+.viewer .icon.close {
     position:absolute;
     top:0em; right:0em;
     width:3em; height:3em;
-    background-image: url(/public/close.svg);
+    background-image: url(/public/close-white.svg);
     background-color: #00000088;
 }
-.icon.close:hover {
+.viewer .icon.close:hover {
     background-color: #ffff0088;
 }
 
