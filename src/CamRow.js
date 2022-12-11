@@ -23,6 +23,7 @@ class CamRow extends React.PureComponent{
                 <div><span>id:<b>{cam.id}</b></span></div>
                 <div><span>folder:<b>{cam.folder}</b></span></div>
                 <div><span>prefix:<b>{cam.prefix}</b></span></div>
+                <div><span>timezone:<b>{cam.timezone}</b></span></div>
                 {isEditable && 
                     <span className="clk icon edit" 
                         onClick={(e)=>{e.stopPropagation();showCamEditor(cam)}}></span>}

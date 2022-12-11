@@ -27,7 +27,7 @@ header       {grid-area: header; }/*background: #282c34;*/
 @media all and (orientation:landscape){
   .App{
       grid-template-rows:    3em 1fr;
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: fit-content(20em) 2fr;
       grid-template-areas: 
       "header header"
       "list data";
