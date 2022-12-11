@@ -15,13 +15,14 @@ const STATUS = new Map([
 class Cell extends React.PureComponent{
     render(){
         const {data,showCamera,isSelected} = this.props
+        const camera = getCameraById(data.id)
         console.log(`Cell render ${data.file} isSelected:${isSelected}`)
         return <div className="cell clk"
         onClick={()=>showViewer(data)}>
             <img src={`${backend.getApiUrl()}/cam_prv/${data.id}/${data.file}`} />
-            {showCamera && <div>{getCameraById(data.id)?.name}</div>}
-            <div>{formatDateTime(data.time)}</div>
-            <div>{data.width}x{data.height}</div>
+            {showCamera && <div>{camera?.name}</div>}
+            <div>{formatDateTime(data.time, camera?.timezone)}</div>
+            <div>{data.width}x{data.height}, {Math.round(data.size/1000)} Kb</div>
             <div>{STATUS.get(data.status)}</div>
             <div className={"select"+(isSelected?" checked":"")} 
                 onClick={(e)=>{e.stopPropagation();selectImage(data)}}></div>

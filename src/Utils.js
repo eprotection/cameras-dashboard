@@ -1,10 +1,31 @@
 // UTILS
+const options = {
+        //timeZone:"Australia/Melbourne",
+    //weekday: "long",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour:'2-digit',
+    minute:'2-digit',
+    timeZoneName:'short'
+}
+
 export const formatTime = function(time){
     return new Date(time).toISOString()
 }
-export const formatDateTime = function(time){
-    return new Date(time).toISOString()
-    .slice(0,16).replace('T',' ') 
+export const formatDateTime = function(time,timeZone){
+    // return new Date(time).toISOString()
+    // .slice(0,16).replace('T',' ') 
+    //timeZone="Australia/Melbourne"
+    const date = new Date(time)
+    try{
+        const formatter = new Intl.DateTimeFormat(
+            "ru", {...options,timeZone:timeZone?timeZone:undefined});
+        return formatter.format(date)
+    }catch(e){
+        console.error('formatDateTime',e)
+        return date.toLocaleString()
+    }
 }
 export const formatDate = function(time){
     if(!time) return ''
