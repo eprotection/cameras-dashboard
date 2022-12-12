@@ -14,7 +14,7 @@ export var selectImage
 
 
 const MIN_LOADING_TIME = 500
-const PAGE_SIZE = 10
+const PAGE_SIZE = 14
 
 class ImageList extends React.Component{
     constructor(props){
