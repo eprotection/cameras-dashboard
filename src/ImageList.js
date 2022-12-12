@@ -144,7 +144,7 @@ class ImageList extends React.Component{
     // RENDER
     render(){
         const {selCamID} = this.props
-        const {selected,openImg} = this.state
+        const {selected,openImg,images} = this.state
         console.log(`ImageList render, selCamID: #${selCamID}`)
         //let items = 
  
@@ -182,7 +182,7 @@ class ImageList extends React.Component{
                 onDelete={this.deleteSelected}/>
         }
         {openImg && 
-            <Viewer image={openImg}/>}
+            <Viewer openImg={openImg} list={images}/>}
         </>)
     }
 }

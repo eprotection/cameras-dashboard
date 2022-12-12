@@ -26,3 +26,30 @@
     height: 100%;
     object-fit: contain;
 }
+.viewer .prev,
+.viewer .next{
+    cursor: pointer;
+    position:absolute;
+    z-index: 10;
+    top:     10%;
+    bottom:  10%;
+    width:   3em;
+    background-size:     contain;                  
+    background-repeat:   no-repeat;
+    background-position: center center;       
+}
+.viewer .prev:hover{
+    background-color: #88888888;
+    background-image: url(/public/chevron_left.svg);
+}
+.viewer .next:hover{
+    background-color: #88888888;
+    background-image: url(/public/chevron_right.svg);
+}
+
+.viewer .prev{
+    left:0em;
+}
+.viewer .next{
+    right:0em;
+}
