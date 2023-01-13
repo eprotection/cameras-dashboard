@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import { hideDialog, onCamUpdated } from "./App"
-import {useInputState} from "./FormUtils"
+import {useFormInput} from "./FormUtils"
 import backend from './Backend'
 
 const valOrEmpty = (value)=>value?value:''
@@ -8,9 +8,9 @@ const valOrEmpty = (value)=>value?value:''
 export default ({cam})=>{
     // Input
     const onChange=()=>{if(error)setError(null)}
-    const [name,   onChangeName]   = useInputState(cam.name,               onChange);
-    const [folder, onChangeFolder] = useInputState(valOrEmpty(cam.folder), onChange);
-    const [prefix, onChangePrefix] = useInputState(valOrEmpty(cam.prefix), onChange);
+    const name     = useFormInput(cam.name,               onChange);
+    const folder   = useFormInput(valOrEmpty(cam.folder), onChange);
+    const prefix   = useFormInput(valOrEmpty(cam.prefix), onChange);
 
     // Saving state
     const [busy,  setBusy]  = useState(false)
@@ -21,9 +21,9 @@ export default ({cam})=>{
         setError(null)
         setBusy(true)
         let newCam = {...cam}
-        newCam.name = name
-        newCam.folder = folder
-        newCam.prefix = prefix
+        newCam.name   = name.value
+        newCam.folder = folder.value
+        newCam.prefix = prefix.value
 
         backend.apiRequest('POST','/cameras/update_camera',newCam)
             .then(()=>{
@@ -43,10 +43,10 @@ export default ({cam})=>{
     
     return (<form>
         <div className="input-table">
-            <i>ID</i><b>{cam.id}</b>
-            <i>Name</i>  <input type='text' value={name}   onChange={onChangeName}/>
-            <i>Folder</i><input type='text' value={folder} onChange={onChangeFolder}/>
-            <i>Prefix</i><input type='text' value={prefix} onChange={onChangePrefix}/>
+            <div><i>ID</i><b>{cam.id}</b></div>
+            <div><i>Name</i>  <input type='text' {...name} /></div>
+            <div><i>Folder</i><input type='text' {...folder}/></div>
+            <div><i>Prefix</i><input type='text' {...prefix}/></div>
         </div>
 
         <div className="message">

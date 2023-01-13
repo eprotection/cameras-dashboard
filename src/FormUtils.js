@@ -1,5 +1,19 @@
 import { useState } from 'react';
 
+export const useFormInput = (initialValue, onChange) => {
+  const [value, setValue] = useState(initialValue);
+
+  function handleChange(e){
+    setValue(e.target.value)
+    onChange() // additional onChange handler
+  }
+
+  return {
+    value,
+    onChange: handleChange
+  }
+}
+
 export const useInputState = (initialValue, onChange) => {
   const [value, setValue] = useState(initialValue);
 
