@@ -16,7 +16,10 @@
     text-align: left;
     margin-bottom: 0.3em;
     border-radius: 10px;
+    cursor: pointer;
 }  
+.dark  .row{background-color: #333;}
+.light .row{background-color: #eee;}
 .dark  .row.selected {background-color: #055;}
 .light .row.selected {background-color: #0ff;}
 

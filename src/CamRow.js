@@ -1,6 +1,8 @@
 import React from 'react';
 import './style/Camera.css';
-import {setSelCamID,showCamEditor} from "./App"
+import {showCamEditor} from "./App"
+import {store} from './store'
+import { toggleCamera } from './imgSlice';
 import {formatDate} from "./Utils"
 
 class CamRow extends React.PureComponent{
@@ -11,8 +13,8 @@ class CamRow extends React.PureComponent{
         console.log(`CamRow render #${cam.id} ${cam.name} isSelected:${isSelected} isEditable:${isEditable}`)
 
         return (
-            <div className={`row clk ${isSelected?'selected':''}`}
-                onClick={()=>{setSelCamID(cam.id)}}>
+            <div className={`row ${isSelected?'selected':''}`}
+                onClick={()=>{store.dispatch(toggleCamera(cam))}}>
                 <div className='main'>
                     <span className='name'>{cam.name}</span>
                     <span className='stat'>{formatDate(cam.img_lasttime)}</span>

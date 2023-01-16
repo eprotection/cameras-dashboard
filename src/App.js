@@ -9,7 +9,7 @@ import CamEditor from "./CamEditor"
 import CamList from "./CamList"
 import ImageList from "./ImageList"
 
-export var setSelCamID
+//export var setSelCamID
 export var getSelectedCamIds
 export var showFtpDialog
 export var showIpDialog
@@ -54,7 +54,7 @@ class App extends React.Component {
     }
 
     // Interface
-    setSelCamID       = this.setSelCamID.bind(this)
+    //setSelCamID       = this.setSelCamID.bind(this)
     getSelectedCamIds = this.getSelectedCamIds.bind(this)
     showFtpDialog     = this.showFtpDialog.bind(this)
     showIpDialog      = this.showIpDialog.bind(this)
@@ -104,7 +104,7 @@ class App extends React.Component {
       //await this.loadCameras()
 
       // Reload images
-      setSelCamID('all')
+      //setSelCamID('all')
 
     }catch(err){
       console.error(err)
@@ -131,11 +131,11 @@ class App extends React.Component {
   //   this.setState({cameras:newList})
   // }
 
-  setSelCamID(id){
-    console.log(`setSelCamID ${id}`)
-    if(this.state.selCamID==id) return
-    this.setState({selCamID:id})
-  }
+  // setSelCamID(id){
+  //   console.log(`setSelCamID ${id}`)
+  //   if(this.state.selCamID==id) return
+  //   this.setState({selCamID:id})
+  // }
 
   getSelectedCamIds(){
     const {selCamID} = this.state

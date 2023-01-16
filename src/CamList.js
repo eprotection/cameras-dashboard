@@ -3,11 +3,16 @@ import CamRow from './CamRow'
 import './style/Camera.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
+import { selectActiveCameras} from "./imgSlice";
 
 
 export default (props)=>{
-    const {status, list} = useSelector(selectCameras)
+    const {status, list}= useSelector(selectCameras)
+    const activeCameras = useSelector(selectActiveCameras)
+
+
     console.log(`=> CamList ${status} ${list.length}`)
+
     const dispatch = useDispatch()
 
     useEffect(()=>{dispatch(loadCamerasChanges())},[])
@@ -38,7 +43,7 @@ export default (props)=>{
         return <CamRow 
             key={cam.id.toString()}
             cam={cam}
-            isSelected={cam.id==selCamID}
+            isSelected={activeCameras[cam.id]!==undefined}
             isEditable={isEditable}
         />
     })

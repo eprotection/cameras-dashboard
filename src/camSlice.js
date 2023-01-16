@@ -18,7 +18,7 @@ const loadList = createAsyncThunk(
         console.log('cameras: start loading...')
         let data = await backend.apiRequest('POST','/cameras/load_list',{mt})
 
-        await new Promise((resolve)=>{setTimeout(() => {resolve()}, 3000)})// FOR DEBUG
+        await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
 
         console.log('cameras:',data)
         // The value we return becomes the `fulfilled` action payload
@@ -32,6 +32,7 @@ export const loadCamerasChanges = () => (dispatch, getState) => {
     dispatch(loadList(mt));
 };
 
+//------------------------------------------------------------------------------------
 // THE SLICE
 const slice = createSlice({
     name: "cameras",
