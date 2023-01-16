@@ -9,7 +9,6 @@ import CamEditor from "./CamEditor"
 import CamList from "./CamList"
 import ImageList from "./ImageList"
 
-
 export var setSelCamID
 export var getSelectedCamIds
 export var showFtpDialog
@@ -72,7 +71,13 @@ class App extends React.Component {
   componentDidMount(){
     console.log(`App mounted`)
 
-    this.fetchData()
+    //this.fetchData()
+    //store.dispatch(loadList())
+  }
+
+  componentWillUnmount(){
+    console.log(`App will unmount`)
+
   }
 
   async fetchData(){
@@ -95,9 +100,8 @@ class App extends React.Component {
         if(!this.state.prefs.allowPublic) throw e
       }
 
-
       // Load cameras
-      await this.loadCameras()
+      //await this.loadCameras()
 
       // Reload images
       setSelCamID('all')
@@ -116,16 +120,16 @@ class App extends React.Component {
 
   //----------------------------------------------------------------------------
   // CAMERAS
-  async loadCameras(){
-    // Load
-    console.log('cameras: start loading...')
-    let data = await backend.apiRequest('POST','/cameras/load_list',{mt:mtCameras})
-    mtCameras = data.mt
-    console.log('cameras:',data)
-    // Update
-    const newList = data.results
-    this.setState({cameras:newList})
-  }
+  // async loadCameras(){
+  //   // Load
+  //   console.log('cameras: start loading...')
+  //   let data = await backend.apiRequest('POST','/cameras/load_list',{mt:mtCameras})
+  //   mtCameras = data.mt
+  //   console.log('cameras:',data)
+  //   // Update
+  //   const newList = data.results
+  //   this.setState({cameras:newList})
+  // }
 
   setSelCamID(id){
     console.log(`setSelCamID ${id}`)

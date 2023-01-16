@@ -1,3 +1,16 @@
+.row-header{
+    display: grid;
+    grid-template-columns: 1fr 6em 5em;
+    border-bottom: 1px solid #888;
+    padding-bottom: 0.3em;
+    margin-bottom: 0.3em;
+}
+.row-status{
+    padding: 2em 1em;
+    font-family: monospace;
+    font-size: 150%;
+}
+
 .row {
     padding:0.5em;
     text-align: left;
@@ -7,13 +20,6 @@
 .dark  .row.selected {background-color: #055;}
 .light .row.selected {background-color: #0ff;}
 
-.row-header{
-    display: grid;
-    grid-template-columns: 1fr 6em 5em;
-    border-bottom: 1px solid #888;
-    padding-bottom: 0.3em;
-    margin-bottom: 0.3em;
-}
 .row .main{
     display: grid;
     grid-template-columns: 1fr 6em 5em;
