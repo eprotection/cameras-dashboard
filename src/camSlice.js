@@ -5,13 +5,15 @@ import backend from './Backend'
 const initialState = {
     mt       : 0,
     list     : [],
-    selCamID : null,
-    status   : 'empty'
+    status   : 'empty',
+    checked  : {} // checked cameras to show images for
 }
 
-export const selectCameras  = (state) => state.cameras;
+export const selectCameras         = (state) => state.cameras;
+export const selectCheckedCameras  = (state) => state.cameras.checked;
 
-// Async action
+//---------------------------------------------------------------------------------------
+// ASYNC ACTIONS ( THUNKS )
 const loadList = createAsyncThunk(
     'cameras/load_list',
     async (mt) => {
@@ -26,19 +28,19 @@ const loadList = createAsyncThunk(
     }
 );
 
-// Dependent on state action
-export const loadCamerasChanges = () => (dispatch, getState) => {
-    const {mt} = selectCameras(getState());
-    dispatch(loadList(mt));
-};
-
 //------------------------------------------------------------------------------------
 // THE SLICE
 const slice = createSlice({
     name: "cameras",
     initialState,
     reducers:{
-
+        checkCamera: (state, action)=>{
+            const cam = action.payload
+            if( state.checked[cam.id]===undefined) 
+                state.checked[cam.id]=cam //append
+            else
+                state.checked[cam.id]=undefined //remove
+        },
     },
     extraReducers:{
         [loadList.pending]: state=>{
@@ -54,5 +56,15 @@ const slice = createSlice({
         },      
     }
 });
+export const { checkCamera } = slice.actions;
+
+//---------------------------------------------------------------------------------------
+// CUSTOM MIDDLEWARE
+//TODO move to slice
+export const loadCamerasChanges = () => (dispatch, getState) => {
+    const {mt} = selectCameras(getState());
+    dispatch(loadList(mt));
+};
+
 
 export default slice.reducer;

@@ -2,7 +2,7 @@ import React from 'react';
 import './style/Camera.css';
 import {showCamEditor} from "./App"
 import {store} from './store'
-import { toggleCamera } from './imgSlice';
+import { checkCamera } from './camSlice';
 import {formatDate} from "./Utils"
 
 class CamRow extends React.PureComponent{
@@ -14,7 +14,7 @@ class CamRow extends React.PureComponent{
 
         return (
             <div className={`row ${isSelected?'selected':''}`}
-                onClick={()=>{store.dispatch(toggleCamera(cam))}}>
+                onClick={()=>{store.dispatch(checkCamera(cam))}}>
                 <div className='main'>
                     <span className='name'>{cam.name}</span>
                     <span className='stat'>{formatDate(cam.img_lasttime)}</span>

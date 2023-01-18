@@ -7,7 +7,7 @@ import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
 import CamEditor from "./CamEditor"
 import CamList from "./CamList"
-import ImageList from "./ImageList"
+import ImageList from "./ImgList"
 
 //export var setSelCamID
 export var getSelectedCamIds
@@ -259,7 +259,7 @@ class App extends React.Component {
         </div>
 
         <div id="layout-data">
-          <ImageList selCamID={selCamID}/>
+          <ImageList/>
         </div>
 
         {error &&

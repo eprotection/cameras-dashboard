@@ -3,12 +3,10 @@ import CamRow from './CamRow'
 import './style/Camera.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
-import { selectActiveCameras} from "./imgSlice";
 
 
 export default (props)=>{
-    const {status, list}= useSelector(selectCameras)
-    const activeCameras = useSelector(selectActiveCameras)
+    const {status, list, checked}= useSelector(selectCameras)
 
 
     console.log(`=> CamList ${status} ${list.length}`)
@@ -17,7 +15,7 @@ export default (props)=>{
 
     useEffect(()=>{dispatch(loadCamerasChanges())},[])
 
-    const {cameras, selCamID, isEditable} = props
+    const {selCamID, isEditable} = props
     console.log(`CamList render  isEditable:${isEditable}`)
 
     // Calculate total a-la cam
@@ -43,7 +41,7 @@ export default (props)=>{
         return <CamRow 
             key={cam.id.toString()}
             cam={cam}
-            isSelected={activeCameras[cam.id]!==undefined}
+            isSelected={checked[cam.id]!==undefined}
             isEditable={isEditable}
         />
     })
