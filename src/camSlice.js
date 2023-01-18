@@ -14,10 +14,11 @@ export const selectCheckedCameras  = (state) => state.cameras.checked;
 
 //---------------------------------------------------------------------------------------
 // ASYNC ACTIONS ( THUNKS )
-const loadList = createAsyncThunk(
-    'cameras/load_list',
-    async (mt) => {
-        console.log('cameras: start loading...')
+export const loadCamerasChanges = createAsyncThunk(
+    'cameras/load',
+    async (_, { getState }) => {
+        const {mt} = selectCameras(getState());
+        console.log('cameras: start loading...', mt)
         let data = await backend.apiRequest('POST','/cameras/load_list',{mt})
 
         await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
@@ -27,6 +28,14 @@ const loadList = createAsyncThunk(
         return data;
     }
 );
+
+//---------------------------------------------------------------------------------------
+// CUSTOM MIDDLEWARE
+// export const loadCamerasChanges = () => (dispatch, getState) => {
+//     const {mt} = selectCameras(getState());
+//     dispatch(loadList(mt));
+// };
+
 
 //------------------------------------------------------------------------------------
 // THE SLICE
@@ -39,32 +48,24 @@ const slice = createSlice({
             if( state.checked[cam.id]===undefined) 
                 state.checked[cam.id]=cam //append
             else
-                state.checked[cam.id]=undefined //remove
+                delete state.checked[cam.id] //remove
         },
     },
     extraReducers:{
-        [loadList.pending]: state=>{
+        [loadCamerasChanges.pending]: state=>{
             state.status = 'pending';
         },      
-        [loadList.fulfilled]: (state,action)=>{
+        [loadCamerasChanges.fulfilled]: (state,action)=>{
             state.status  = 'fulfilled';
             state.mt   = action.payload.mt;
             state.list = action.payload.results;
         },      
-        [loadList.rejected]: state=>{
+        [loadCamerasChanges.rejected]: state=>{
             state.status = 'rejected';
         },      
     }
 });
 export const { checkCamera } = slice.actions;
-
-//---------------------------------------------------------------------------------------
-// CUSTOM MIDDLEWARE
-//TODO move to slice
-export const loadCamerasChanges = () => (dispatch, getState) => {
-    const {mt} = selectCameras(getState());
-    dispatch(loadList(mt));
-};
 
 
 export default slice.reducer;

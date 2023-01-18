@@ -10,7 +10,7 @@ class CamRow extends React.PureComponent{
 
         const { cam, isSelected, isEditable } = this.props
 
-        console.log(`CamRow render #${cam.id} ${cam.name} isSelected:${isSelected} isEditable:${isEditable}`)
+        //console.log(`CamRow render #${cam.id} ${cam.name} isSelected:${isSelected} isEditable:${isEditable}`)
 
         return (
             <div className={`row ${isSelected?'selected':''}`}
