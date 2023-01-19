@@ -3,8 +3,6 @@ import CamRow from './CamRow'
 import './style/Camera.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
-import { clearImages, loadImageChanges } from "./imgSlice";
-
 
 export default (props)=>{
     const {status, list, checked}= useSelector(selectCameras)
@@ -15,7 +13,6 @@ export default (props)=>{
     const dispatch = useDispatch()
 
     useEffect(()=>{dispatch(loadCamerasChanges())},[])
-    //useEffect(()=>{dispatch(loadImageChanges())},[])
 
     const {selCamID, isEditable} = props
     console.log(`CamList render  isEditable:${isEditable}`)

@@ -9,30 +9,30 @@ const PAGE_SIZE = 14
 // DATA
 const initialState = {
     list       : [], // images for the selected cameras
-    mt         : 0,
-    status     : 'empty'
+    status     : 'empty',
+    showMore    : false
 }
 export const selectImages  = (state) => state.images;
 
 //---------------------------------------------------------------------------------------
 // MIDDLEWARE ASYNC THUNKS 
-export const loadImageChanges = createAsyncThunk(
+export const loadImagesTail = createAsyncThunk(
     'images/load',
     async (_, { getState }) => {
         const state = getState()
-        const {mt,list} = selectImages(state);
+        const { list } = selectImages(state);
         const checkedCameras = selectCheckedCameras(state)
 
         // Calculate parameters
         const ids = Object.keys(checkedCameras)
         const minTime = list.length>0?list[list.length-1].time : null
 
-        console.log('========= ===== ===== images: start loading...', mt, checkedCameras)
+        console.log('========= images: start loading...', minTime)
         let data = await backend.apiRequest('POST','/cameras/load_images',
-            {   mt,
+            {  
                 ids,            
                 limit : PAGE_SIZE,
-                minTime
+                before: minTime
             })
 
         await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
@@ -49,25 +49,23 @@ const slice = createSlice({
     name: "images",
     initialState,
     reducers:{
-        clear: (state) => {
-            console.log('##### clearImages')
-            state.list = []
-            state.mt = 0
-        }
+        clear: (state) => initialState
     },
     extraReducers:{
-        [loadImageChanges.pending]: state=>{
-            state.status = 'pending';
+        [loadImagesTail.pending]: state=>{
+            state.status = 'pending'
+            state.showMore = false
         },      
-        [loadImageChanges.fulfilled]: (state,action)=>{
+        [loadImagesTail.fulfilled]: (state,action)=>{
+            const tail = action.payload;
             state.status = 'fulfilled';
-            //console.log("!!!!!!!!!!!",action)
-            // state.mt   = action.payload.mt;
-            // state.list = action.payload.results;
-            state.list = action.payload;
+            state.list.push(...tail)
+            state.showMore = tail.length==PAGE_SIZE
+
         },      
-        [loadImageChanges.rejected]: state=>{
-            state.status = 'rejected';
+        [loadImagesTail.rejected]: state=>{
+            state.status = 'rejected'
+            state.showMore = true
         },      
     }
 });
