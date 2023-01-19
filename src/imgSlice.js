@@ -10,9 +10,12 @@ const PAGE_SIZE = 14
 const initialState = {
     list       : [], // images for the selected cameras
     status     : 'empty',
-    showMore    : false
+    showMore   : false,
+    checked    : {} // checked images to make action for
+
 }
 export const selectImages  = (state) => state.images;
+export const getImageKey   = (image) => `${image.id}-${image.time}`
 
 //---------------------------------------------------------------------------------------
 // MIDDLEWARE ASYNC THUNKS 
@@ -49,7 +52,19 @@ const slice = createSlice({
     name: "images",
     initialState,
     reducers:{
-        clear: (state) => initialState
+        clear: (state) => initialState,
+        check: (state, action)=>{
+            const img = action.payload
+            const key = getImageKey(img)
+            if( state.checked[key]===undefined) 
+                state.checked[key]=img //append
+            else
+                delete state.checked[key] //remove
+        },
+        clearChecked: (state) => {
+            state.checked = {}
+        }
+
     },
     extraReducers:{
         [loadImagesTail.pending]: state=>{
@@ -69,7 +84,7 @@ const slice = createSlice({
         },      
     }
 });
-export const { clear } = slice.actions;
+export const { clear, clearChecked } = slice.actions;
 
 //---------------------------------------------------------------------------------------
 // CUSTOM MIDDLEWARE

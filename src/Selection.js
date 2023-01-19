@@ -7,8 +7,8 @@ export default ({size,onClear,onDelete})=>{
     return <div className="selection">
         <span><b>{size}</b> selected image{s}</span>
         <button 
-            onClick={onDelete}>Delete image{s}</button>
+            onClick={(e)=>{e.stopPropagation();onDelete();}}>Delete image{s}</button>
         <span className="clk icon close" 
-            onClick={onClear}></span>
+            onClick={(e)=>{e.stopPropagation();onClear();}}></span>
     </div>
 }    

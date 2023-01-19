@@ -2,8 +2,10 @@ import React from "react"
 import backend from './Backend'
 import {getCameraById}  from './App'
 import {formatDateTime} from './Utils'
-import {showViewer,selectImage} from './ImageList'
+import {showViewer} from './ImageList'
 import './style/Image.css';
+import { store } from './store';
+
 
 const STATUS = new Map([
     [ 0, ''],
@@ -14,9 +16,9 @@ const STATUS = new Map([
 
 class Cell extends React.PureComponent{
     render(){
-        const {data,showCamera,isSelected} = this.props
+        const {data,showCamera,isChecked} = this.props
         const camera = getCameraById(data.id)
-        console.log(`Cell render ${data.file} isSelected:${isSelected}`)
+        console.log(`Cell render ${data.file} isChecked:${isChecked}`)
         return <div className="cell clk"
         onClick={()=>showViewer(data)}>
             <img src={`${backend.getApiUrl()}/cam_prv/${data.id}/${data.file}`} />
@@ -24,8 +26,9 @@ class Cell extends React.PureComponent{
             <div>{formatDateTime(data.time, camera?.timezone)}</div>
             <div>{data.width}x{data.height}, {Math.round(data.size/1000)} Kb</div>
             <div>{STATUS.get(data.status)}</div>
-            <div className={"select"+(isSelected?" checked":"")} 
-                onClick={(e)=>{e.stopPropagation();selectImage(data)}}></div>
+            <div className={"select"+(isChecked?" checked":"")} 
+                onClick={(e)=>{e.stopPropagation();
+                    store.dispatch({type:"images/check",payload:data})}}></div>
         </div>
     }
 }

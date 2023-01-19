@@ -1,11 +1,14 @@
 import React,{useEffect} from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCheckedCameras } from "./camSlice";
-import { selectImages, clear, loadImagesTail } from "./imgSlice";
+import { selectImages, getImageKey, clear, clearChecked, loadImagesTail } from "./imgSlice";
 import Cell from "./ImageCell"
+import Selection from "./Selection"
+
 
 export default (props)=>{
-    const {list,status,showMore} = useSelector(selectImages)
+    const {list,status,showMore,checked} = useSelector(selectImages)
+    const checkedCount = Object.keys(checked).length
     const checkedCameras = useSelector(selectCheckedCameras)
     const dispatch = useDispatch()
     console.log("=> ImgList")
@@ -21,13 +24,14 @@ export default (props)=>{
     return (<>
         <div>
             <div className="cell-container">
-                {list.map(item=>
-                    <Cell 
-                        key={`${item.id}-${item.time}`} 
-                        data={item}
+                {list.map(image=>{
+                    const key = getImageKey(image)
+                    return <Cell 
+                        key={key} 
+                        data={image}
                         showCamera={true}
-                        isSelected={false}/>
-                )}
+                        isChecked={Boolean(checked[key])}/>
+                })}
 
                 {status==="pending" && 
                 <div className="last-cell">
@@ -41,5 +45,16 @@ export default (props)=>{
 
             </div>
         </div>
+        {checkedCount>0 && 
+            <Selection 
+                size={checkedCount}
+                onClear ={()=>{dispatch(clearChecked())}}
+                onDelete={()=>{}}/>
+        }
+
     </>);
 }
+/* <Selection 
+size={checkedCount}
+onClear ={this.clearSelection}
+onDelete={this.deleteSelected}/> */
