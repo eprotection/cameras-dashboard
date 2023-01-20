@@ -1,9 +1,9 @@
 import React from 'react';
-import './style/Camera.css';
-import {showCamEditor} from "./App"
-import {store} from './store'
+import './Camera.css';
+import {showCamEditor} from "../App"
+import {store} from '../store'
 import { checkCamera } from './camSlice';
-import {formatDate} from "./Utils"
+import {formatDate} from "../Utils"
 
 class CamRow extends React.PureComponent{
     render(){

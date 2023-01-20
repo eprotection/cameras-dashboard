@@ -1,6 +1,6 @@
 import React,{useEffect} from "react"
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCheckedCameras } from "./camSlice";
+import { selectCheckedCameras } from "../cameras/camSlice";
 import { selectImages, getImageKey, clear, clearChecked, deleteChecked, loadImagesTail } from "./imgSlice";
 import Cell from "./ImageCell"
 import Selection from "./Selection"

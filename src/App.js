@@ -6,8 +6,8 @@ import Settings from "./Settings";
 import ConfFTP from './ConfFTP'
 import FormFTP from "./FormFTP"
 import CamEditor from "./CamEditor"
-import CamList from "./CamList"
-import ImageList from "./ImgList"
+import CamList from "./cameras/CamList"
+import ImageList from "./images/ImgList"
 
 //export var setSelCamID
 export var getSelectedCamIds

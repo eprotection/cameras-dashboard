@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import camReducer from './camSlice';
-import imgReducer from './imgSlice';
+import camReducer from './cameras/camSlice';
+import imgReducer from './images/imgSlice';
 
 export const store = configureStore({
   reducer: {

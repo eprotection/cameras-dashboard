@@ -1,6 +1,6 @@
 import React,{useEffect} from "react"
 import CamRow from './CamRow'
-import './style/Camera.css';
+import './Camera.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
 

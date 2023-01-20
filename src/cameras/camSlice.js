@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import backend from './Backend'
+import backend from '../Backend'
 
 // DATA
 const initialState = {

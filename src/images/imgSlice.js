@@ -1,8 +1,8 @@
 // IMAGES FOR SELECTED CAMERAS
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import backend from './Backend'
-import { selectCheckedCameras } from "./camSlice";
+import backend from '../Backend'
+import { selectCheckedCameras } from "../cameras/camSlice";
 
 const PAGE_SIZE = 14
 

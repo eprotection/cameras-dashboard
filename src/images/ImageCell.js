@@ -1,10 +1,9 @@
 import React from "react"
-import backend from './Backend'
-import {getCameraById}  from './App'
-import {formatDateTime} from './Utils'
-import {showViewer} from './ImageList'
-import './style/Image.css';
-import { store } from './store';
+import backend from '../Backend'
+import {getCameraById}  from '../App'
+import {formatDateTime} from '../Utils'
+import './Image.css';
+import { store } from '../store';
 
 
 const STATUS = new Map([
@@ -16,6 +15,8 @@ const STATUS = new Map([
 
 class Cell extends React.PureComponent{
     render(){
+        const showViewer=()=>{}
+        
         const {data,showCamera,isChecked} = this.props
         const camera = getCameraById(data.id)
         console.log(`Cell render ${data.file} isChecked:${isChecked}`)

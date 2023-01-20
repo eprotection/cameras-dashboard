@@ -1,6 +1,6 @@
 import React from "react"
 import {hideViewer} from './ImageList'
-import backend from './Backend'
+import backend from '../Backend'
 
 
 export default ({openImg, list})=>{
