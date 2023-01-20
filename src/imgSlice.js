@@ -45,6 +45,26 @@ export const loadImagesTail = createAsyncThunk(
         return data;
     }
 );
+export const deleteChecked = createAsyncThunk(
+    'images/deleteChecked',
+    async (_, { getState }) => {
+
+        const state = getState()
+        const { checked } = selectImages(state);
+
+        // Calculate parameters
+        let keys = []
+        for(const image of Object.values(checked)){
+            keys.push({id:image.id, time:image.time})
+        }
+        console.log('========= images: start deleting...', keys)
+        let data = await backend.apiRequest('POST','/cameras/remove_images',
+            { keys })
+
+        // The value we return becomes the `fulfilled` action payload
+        return;
+    }
+);
 
 //------------------------------------------------------------------------------------
 // THE SLICE
@@ -81,6 +101,19 @@ const slice = createSlice({
         [loadImagesTail.rejected]: state=>{
             state.status = 'rejected'
             state.showMore = true
+        },      
+
+        [deleteChecked.pending]: state=>{
+            state.status = 'pending'
+        },      
+        [deleteChecked.fulfilled]: state=>{
+            state.status = 'fulfilled';
+            state.list = state.list.filter(
+                img=>!state.checked[getImageKey(img)])// remove checked from the list
+            state.checked = {} // clear checked
+        },      
+        [deleteChecked.rejected]: state=>{
+            state.status = 'rejected'
         },      
     }
 });

@@ -1,7 +1,7 @@
 import React,{useEffect} from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCheckedCameras } from "./camSlice";
-import { selectImages, getImageKey, clear, clearChecked, loadImagesTail } from "./imgSlice";
+import { selectImages, getImageKey, clear, clearChecked, deleteChecked, loadImagesTail } from "./imgSlice";
 import Cell from "./ImageCell"
 import Selection from "./Selection"
 
@@ -48,8 +48,13 @@ export default (props)=>{
         {checkedCount>0 && 
             <Selection 
                 size={checkedCount}
-                onClear ={()=>{dispatch(clearChecked())}}
-                onDelete={()=>{}}/>
+                onClear ={()=>{
+                    dispatch(clearChecked())
+                }}
+                onDelete={()=>{
+                    if(!window.confirm('Delete selected images?')) return;
+                    dispatch(deleteChecked())
+                }}/>
         }
 
     </>);
