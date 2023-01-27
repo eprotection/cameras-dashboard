@@ -55,43 +55,47 @@ class ImageList extends React.Component{
         return false;
     }
 
-    loadData(reload){
-        const images = reload? [] : this.state.images
-        const minTime = images.length>0?images[images.length-1].time : null
-        console.log(`ImageList loadData, minTime:${minTime}`)
-        this.setState({
-            images : images,
-            error  : null,
-            loading: true
-        })
+    async loadData(reload){
+        try{
+            // Loading state
+            const images = reload? [] : this.state.images
+            const minTime = images.length>0?images[images.length-1].time : null
+            console.log(`ImageList loadData, minTime:${minTime}`)
+            this.setState({
+                images : images,
+                error  : null,
+                loading: true
+            })
 
-        const timeStart = new Date().getTime()
-        apiRequest('POST','/cameras/load_images',{
-            ids   : getSelectedCamIds(),
-            limit : PAGE_SIZE,
-            before: minTime
-        })
-        .then(data=>{
+            // LOAD DATA
+            const timeStart = new Date().getTime()
+            let data = await apiRequest('POST','/cameras/load_images',{
+                ids   : getSelectedCamIds(),
+                limit : PAGE_SIZE,
+                before: minTime
+            })
+            // Timeout
             const timeout = MIN_LOADING_TIME-(new Date().getTime()-timeStart)
             console.log('ImageList load success',timeout,data)
-            window.setTimeout(function(){
-                this.setState({
-                    images : [...images].concat(data),
-                    error  : null,
-                    loading: false,
-                    hasMore: data.length==PAGE_SIZE
+            if(timeout>0){
+                await new Promise((resolve)=>{
+                    window.setTimeout(()=>{resolve()}, timeout)
                 })
-            }.bind(this),timeout>0?timeout:0)
-
-        })
-        .catch(error=>{
+            }
+            // Update state
+            this.setState({
+                images : [...images].concat(data),
+                error  : null,
+                loading: false,
+                hasMore: data.length==PAGE_SIZE
+            })
+        }catch(error){
             console.log('ImageList load error',error)
             this.setState({
                 error  : error.toString(),
                 loading: false
             })
-
-        })
+        }
     }
     //-----------------------------------------------------------------------------
     // SELECTION
@@ -171,7 +175,7 @@ class ImageList extends React.Component{
 
                 {this.state.images.length>0 && this.state.hasMore && !this.state.loading &&
                 <div className="last-cell">
-                    <span className="btn clk" onClick={()=>{this.loadData()}}>show more</span>
+                    <span className="btn clk" onClick={this.loadData.bind(this)}>show more</span>
                 </div>}
             </div>
         </div>
