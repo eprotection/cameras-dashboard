@@ -10,14 +10,13 @@ const STATUS = new Map([
     [ 0, ''],
     [10, 'original'],
     [20, 'processing'],
-    [30, 'classified']
+    [30, 'classified'],
+    [40, 'not-classified']
 ])
 
 class Cell extends React.PureComponent{
-    render(){
-        const showViewer=()=>{}
-        
-        const {data,showCamera,isChecked} = this.props
+    render(){        
+        const {data,showCamera,isChecked,showViewer} = this.props
         const camera = getCameraById(data.id)
         console.log(`Cell render ${data.file} isChecked:${isChecked}`)
         return <div className="cell clk"

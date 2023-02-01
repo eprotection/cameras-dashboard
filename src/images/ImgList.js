@@ -1,9 +1,11 @@
-import React,{useEffect} from "react"
+import React,{useState,useEffect,useCallback} from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCheckedCameras } from "../cameras/camSlice";
 import { selectImages, getImageKey, clear, clearChecked, deleteChecked, loadImagesTail } from "./imgSlice";
 import Cell from "./ImageCell"
 import Selection from "./Selection"
+import Viewer from "../viewer/Viewer"
+import '../viewer/Viewer.css';
 
 
 export default (props)=>{
@@ -11,6 +13,7 @@ export default (props)=>{
     const checkedCount = Object.keys(checked).length
     const checkedCameras = useSelector(selectCheckedCameras)
     const dispatch = useDispatch()
+
     console.log("=> ImgList")
 
     useEffect(()=>{
@@ -21,6 +24,12 @@ export default (props)=>{
         }
     },[checkedCameras])    
 
+    // Image viewer
+    const [openImg, setOpenImage] = useState(null) 
+    const showViewer = useCallback( (img)=>{setOpenImage(img) }, [])
+    const hideViewer = useCallback(    ()=>{setOpenImage(null)}, [])
+
+
     return (<>
         <div>
             <div className="cell-container">
@@ -30,7 +39,8 @@ export default (props)=>{
                         key={key} 
                         data={image}
                         showCamera={true}
-                        isChecked={Boolean(checked[key])}/>
+                        isChecked={Boolean(checked[key])}
+                        showViewer={showViewer}/>
                 })}
 
                 {status==="pending" && 
@@ -56,6 +66,9 @@ export default (props)=>{
                     dispatch(deleteChecked())
                 }}/>
         }
+        {openImg && 
+            <Viewer openImg={openImg} list={list} hideViewer={hideViewer}/>}
+
 
     </>);
 }

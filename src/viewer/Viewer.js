@@ -1,9 +1,8 @@
 import React from "react"
-import {hideViewer} from './ImageList'
 import backend from '../Backend'
 
 
-export default ({openImg, list})=>{
+export default ({openImg, list, hideViewer })=>{
     const [index, setIndex] = React.useState(list.findIndex((img)=>img===openImg))
     const image = list[index]
 
