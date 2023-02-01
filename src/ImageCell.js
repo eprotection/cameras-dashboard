@@ -9,7 +9,8 @@ const STATUS = new Map([
     [ 0, ''],
     [10, 'original'],
     [20, 'processing'],
-    [30, 'classified']
+    [30, 'classified'],
+    [40, 'not-classified']
 ])
 
 class Cell extends React.PureComponent{
