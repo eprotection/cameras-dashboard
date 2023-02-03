@@ -38,7 +38,7 @@ export default (props)=>{
                     return <Cell 
                         key={key} 
                         data={image}
-                        showCamera={true}
+                        camera={checkedCameras[image.id]}
                         isChecked={Boolean(checked[key])}
                         showViewer={showViewer}/>
                 })}
@@ -72,7 +72,3 @@ export default (props)=>{
 
     </>);
 }
-/* <Selection 
-size={checkedCount}
-onClear ={this.clearSelection}
-onDelete={this.deleteSelected}/> */

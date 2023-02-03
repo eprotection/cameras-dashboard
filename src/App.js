@@ -10,7 +10,6 @@ import CamList from "./cameras/CamList"
 import ImageList from "./images/ImgList"
 
 //export var setSelCamID
-export var getSelectedCamIds
 export var showFtpDialog
 export var showIpDialog
 export var hideDialog
@@ -19,7 +18,6 @@ export var hideSettings
 export var savePref
 export var showCamEditor
 export var onCamUpdated
-export var getCameraById
 export var toggleTheme
 
 var mtCameras = 0
@@ -54,8 +52,6 @@ class App extends React.Component {
     }
 
     // Interface
-    //setSelCamID       = this.setSelCamID.bind(this)
-    getSelectedCamIds = this.getSelectedCamIds.bind(this)
     showFtpDialog     = this.showFtpDialog.bind(this)
     showIpDialog      = this.showIpDialog.bind(this)
     hideDialog        = this.hideDialog.bind(this)
@@ -64,7 +60,6 @@ class App extends React.Component {
     savePref          = this.savePref.bind(this)
     showCamEditor     = this.showCamEditor.bind(this)
     onCamUpdated      = this.onCamUpdated.bind(this)
-    getCameraById     = this.getCameraById.bind(this)
     toggleTheme       = this.toggleTheme.bind(this)
   }
 
@@ -120,36 +115,6 @@ class App extends React.Component {
 
   //----------------------------------------------------------------------------
   // CAMERAS
-  // async loadCameras(){
-  //   // Load
-  //   console.log('cameras: start loading...')
-  //   let data = await backend.apiRequest('POST','/cameras/load_list',{mt:mtCameras})
-  //   mtCameras = data.mt
-  //   console.log('cameras:',data)
-  //   // Update
-  //   const newList = data.results
-  //   this.setState({cameras:newList})
-  // }
-
-  // setSelCamID(id){
-  //   console.log(`setSelCamID ${id}`)
-  //   if(this.state.selCamID==id) return
-  //   this.setState({selCamID:id})
-  // }
-
-  getSelectedCamIds(){
-    const {selCamID} = this.state
-    if(selCamID=='all'){
-      return this.state.cameras.map(item=>item.id)
-    }else{
-      return [selCamID]
-    }
-  }
-  getCameraById(id){
-    for(const cam of this.state.cameras)
-      if(cam.id==id) return cam
-  }
-
   onCamUpdated(newCam){
     let newState = {}
     newState.cameras = this.state.cameras.map(
