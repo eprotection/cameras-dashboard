@@ -32,6 +32,7 @@ class ImageList extends React.Component{
         showViewer=this.showViewer.bind(this)
         hideViewer=this.hideViewer.bind(this)
         selectImage=this.selectImage.bind(this)
+        this.loadData=this.loadData.bind(this)
         this.clearSelection=this.clearSelection.bind(this)
         this.deleteSelected=this.deleteSelected.bind(this)
     }
@@ -60,7 +61,7 @@ class ImageList extends React.Component{
             // Loading state
             const images = reload? [] : this.state.images
             const minTime = images.length>0?images[images.length-1].time : null
-            console.log(`ImageList loadData, minTime:${minTime}`)
+            console.log(`ImageList loadData, reload:${reload} minTime:${minTime}`)
             this.setState({
                 images : images,
                 error  : null,
@@ -175,7 +176,7 @@ class ImageList extends React.Component{
 
                 {this.state.images.length>0 && this.state.hasMore && !this.state.loading &&
                 <div className="last-cell">
-                    <span className="btn clk" onClick={this.loadData.bind(this)}>show more</span>
+                    <span className="btn clk" onClick={()=>{this.loadData(false)}}>show more</span>
                 </div>}
             </div>
         </div>
