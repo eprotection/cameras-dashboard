@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react"
 import logo from './logo.svg';
 import './style/App.css';
+import {useTheme} from './theme'
 import { useSelector, useDispatch } from 'react-redux';
 import {loadAuth, selectAuth} from './auth/authSlice'
 import CamList from "./cameras/CamList"
@@ -8,28 +9,16 @@ import ImageList from "./images/ImgList"
 
 export const showCamEditor=()=>{}
 
-const loadTheme=()=>{
-  let stored=window.localStorage.getItem('theme');
-  return stored?stored:'dark'
-}
-const saveTheme=(value)=>{
-  window.localStorage.setItem('theme',value)
-}
-
-
 const App = ()=>{
-  const [theme,setTheme] = useState(loadTheme)
-  const toggleTheme = ()=>{
-    const newTheme = theme=='dark' ? 'light' : 'dark'
-    saveTheme(newTheme)
-    setTheme(newTheme) 
-  }
-
+  // Theme
+  const [theme,toggleTheme] = useTheme()
+  // Store
   const dispatch = useDispatch()
   const {ws,user,error} = useSelector(selectAuth)
-
+  // Settings dialog
   const [settings,setSettings] = useState(false)
 
+  
   useEffect(()=>{dispatch(loadAuth())},[])
 
 
