@@ -4,7 +4,7 @@ import './Camera.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
 
-export default (props)=>{
+export default ({isEditable})=>{
     const {status, list, checked}= useSelector(selectCameras)
 
 
@@ -14,7 +14,6 @@ export default (props)=>{
 
     useEffect(()=>{dispatch(loadCamerasChanges())},[])
 
-    const {selCamID, isEditable} = props
     console.log(`CamList render  isEditable:${isEditable}`)
 
     // Calculate total a-la cam
@@ -53,7 +52,7 @@ export default (props)=>{
         <CamRow 
             key='all'
             cam={total}
-            isSelected={total.id==selCamID} />
+            isSelected={false} />
 
         {rows}
 
