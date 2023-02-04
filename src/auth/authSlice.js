@@ -73,8 +73,8 @@ export default slice.reducer;
 // PREFS
 var mtPrefs   = 0
 const ALLOW_PUBLIC_ID= 2005
-const FTP_SERVER_ID  = 2021
-const IP_SERVER_ID   = 2025
+export const FTP_SERVER_ID  = 2021
+export const IP_SERVER_ID   = 2025
 
 async function loadPrefs(){
     // Load

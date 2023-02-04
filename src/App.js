@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {loadAuth, selectAuth} from './auth/authSlice'
 import CamList from "./cameras/CamList"
 import ImageList from "./images/ImgList"
+import Settings from "./Settings";
+
 
 export const showCamEditor=()=>{}
 
@@ -16,9 +18,9 @@ const App = ()=>{
   const dispatch = useDispatch()
   const {ws,user,error} = useSelector(selectAuth)
   // Settings dialog
-  const [settings,setSettings] = useState(false)
+  const [showSettings,setShowSettings] = useState(false)
 
-  
+
   useEffect(()=>{dispatch(loadAuth())},[])
 
 
@@ -37,7 +39,7 @@ const App = ()=>{
       <span className="btn clk" onClick={toggleTheme}>
         Set {theme=='dark'?'light':'dark'} theme
       </span>
-      <span className="clk icon gear" onClick={()=>setSettings(true)}></span>
+      <span className="clk icon gear" onClick={()=>setShowSettings(true)}></span>
     </header>
    
     <div id="layout-list">
@@ -47,6 +49,9 @@ const App = ()=>{
     <div id="layout-data">
       <ImageList/>
     </div>
+
+    {showSettings && 
+      <Settings hide={()=>setShowSettings(false)}/> }
   </>
 
   const renderError=()=>
