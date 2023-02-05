@@ -27,7 +27,7 @@ class ConfFTP extends React.Component{
     render(){
         const {data,onClick} = this.props
     
-        console.log(`ConfFTP render, ${data?`${data.user}@${data.host}`:"null"}  onClick:${onClick}`)
+        //console.log(`ConfFTP render, ${data?`${data.user}@${data.host}`:"null"}  onClick:${onClick}`)
     
         return (
             <b className={onClick?"ftp clk":"ftp"}

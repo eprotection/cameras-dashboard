@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {loadAuth, selectAuth} from './auth/authSlice'
 import CamList from "./cameras/CamList"
 import ImageList from "./images/ImgList"
-import Settings from "./Settings";
+import Settings from "./settings/Settings";
 
 
 export const showCamEditor=()=>{}

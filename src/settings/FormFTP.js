@@ -1,6 +1,6 @@
 import React,{Fragment, useState} from "react";
-import {useObjectInputState} from "./FormUtils"
-import {apiRequest} from './Backend'
+import {useObjectInputState} from "../FormUtils"
+import {apiRequest} from '../Backend'
 
 const FormFTP = ({ftp, useFolder, onFinished, onSaveAsync})=>{
 

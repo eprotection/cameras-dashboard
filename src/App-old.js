@@ -2,9 +2,9 @@ import React,{useState,useEffect} from "react"
 import logo from './logo.svg';
 import './style/App.css';
 import backend from './Backend'
-import Settings from "./Settings";
-import ConfFTP from './ConfFTP'
-import FormFTP from "./FormFTP"
+import Settings from "./settings/Settings";
+import ConfFTP from './settings/ConfFTP'
+import FormFTP from "./settings/FormFTP"
 import CamEditor from "./CamEditor"
 import CamList from "./cameras/CamList"
 import ImageList from "./images/ImgList"
