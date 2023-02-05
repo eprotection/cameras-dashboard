@@ -7,7 +7,7 @@ import { useDialog } from "../dialog";
 import CamEditor from './CamEditor'
 
 export default ({isEditable})=>{
-    const {status, list, checked}= useSelector(selectCameras)
+    const {list, error, checked}= useSelector(selectCameras)
 
     console.log(`=> CamList`)
 
@@ -33,28 +33,29 @@ export default ({isEditable})=>{
         img_lasttime: null
     }
 
-    const rows = [...list]
-    .sort((a,b)=>a.name.localeCompare(b.name))
-    .map(cam=>{            
-        total.img_num += cam.img_num
-        let lst = cam.img_lasttime
-        if(lst){
-            if(!total.img_lasttime)
-                total.img_lasttime = lst
-            else if(lst>total.img_lasttime)
-                total.img_lasttime = lst
-        }
-
-        return <CamRow 
-            key={cam.id.toString()}
-            cam={cam}
-            isSelected={checked[cam.id]!==undefined}
-            isEditable={isEditable}
-            showCamEditor={showCamEditor}
-        />
-    })
-        
-    return <>
+    const renderList = ()=>{
+        const rows = [...list]
+        .sort((a,b)=>a.name.localeCompare(b.name))
+        .map(cam=>{            
+            total.img_num += cam.img_num
+            let lst = cam.img_lasttime
+            if(lst){
+                if(!total.img_lasttime)
+                    total.img_lasttime = lst
+                else if(lst>total.img_lasttime)
+                    total.img_lasttime = lst
+            }
+    
+            return <CamRow 
+                key={cam.id.toString()}
+                cam={cam}
+                isSelected={checked[cam.id]!==undefined}
+                isEditable={isEditable}
+                showCamEditor={showCamEditor}
+            />
+        })
+    
+        return <>
         <div className="row-header">
             <span>name</span><span>last</span><span>total</span>
         </div>
@@ -67,9 +68,13 @@ export default ({isEditable})=>{
             />
 
         {rows}
-
-        {status!=='fulfilled' &&
-        <div className="row-status">{status}</div>}
+        </>
+    }
+        
+    return <>
+        {list && renderList()}
+        {error&&          <div className="cam-status err">Cameras loading error:<br/>{error}</div>}
+        {!list&&!error && <div className="cam-status">Cameras loading...</div>}
 
         {dialog}
 

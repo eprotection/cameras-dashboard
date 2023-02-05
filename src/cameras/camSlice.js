@@ -4,8 +4,8 @@ import backend from '../Backend'
 // DATA
 const initialState = {
     mt       : 0,
-    list     : [],
-    status   : 'empty',
+    list     : null,
+    error    : null,
     checked  : {} // checked cameras to show images for
 }
 
@@ -53,15 +53,17 @@ const slice = createSlice({
     },
     extraReducers:{
         [loadCamerasChanges.pending]: state=>{
-            state.status = 'pending';
+            state.list  = null
+            state.error = null
         },      
         [loadCamerasChanges.fulfilled]: (state,action)=>{
-            state.status  = 'fulfilled';
-            state.mt   = action.payload.mt;
-            state.list = action.payload.results;
+            state.mt   = action.payload.mt
+            state.list = action.payload.results
+            state.error = null
         },      
-        [loadCamerasChanges.rejected]: state=>{
-            state.status = 'rejected';
+        [loadCamerasChanges.rejected]: (state,action)=>{
+            state.list = null
+            state.error = action.error?.message
         },      
     }
 });
