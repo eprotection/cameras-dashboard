@@ -8,9 +8,6 @@ import CamList from "./cameras/CamList"
 import ImageList from "./images/ImgList"
 import Settings from "./settings/Settings";
 
-
-export const showCamEditor=()=>{}
-
 const App = ()=>{
   // Theme
   const [theme,toggleTheme] = useTheme()

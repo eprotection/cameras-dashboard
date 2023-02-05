@@ -1,6 +1,5 @@
 import React from 'react';
 import './Camera.css';
-import {showCamEditor} from "../App"
 import {store} from '../store'
 import { checkCamera } from './camSlice';
 import {formatDate} from "../Utils"
@@ -8,9 +7,9 @@ import {formatDate} from "../Utils"
 class CamRow extends React.PureComponent{
     render(){
 
-        const { cam, isSelected, isEditable } = this.props
+        const { cam, isSelected, isEditable, showCamEditor } = this.props
 
-        //console.log(`CamRow render #${cam.id} ${cam.name} isSelected:${isSelected} isEditable:${isEditable}`)
+        console.log(`=>CamRow #${cam.id} ${cam.name} isSelected:${isSelected} isEditable:${isEditable}`)
 
         return (
             <div className={`row ${isSelected?'selected':''}`}

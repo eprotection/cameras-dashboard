@@ -1,20 +1,29 @@
-import React,{useEffect} from "react"
+import React,{useEffect,useCallback} from "react"
 import CamRow from './CamRow'
 import './Camera.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
+import { useDialog } from "../dialog";
+import CamEditor from './CamEditor'
 
 export default ({isEditable})=>{
     const {status, list, checked}= useSelector(selectCameras)
 
-
-    console.log(`=> CamList ${status} ${list.length}`)
+    console.log(`=> CamList`)
 
     const dispatch = useDispatch()
 
     useEffect(()=>{dispatch(loadCamerasChanges())},[])
 
-    console.log(`CamList render  isEditable:${isEditable}`)
+    const {dialog,showDialog,hideDialog} = useDialog()
+    const showCamEditor = useCallback( cam=>{
+        console.log("showCamEditor cam:",cam)
+        showDialog(
+            'Camera Editor',
+            <CamEditor cam={cam} hideDialog={hideDialog}/>
+        )
+      
+    },[])
 
     // Calculate total a-la cam
     let total = {
@@ -41,6 +50,7 @@ export default ({isEditable})=>{
             cam={cam}
             isSelected={checked[cam.id]!==undefined}
             isEditable={isEditable}
+            showCamEditor={showCamEditor}
         />
     })
         
@@ -52,12 +62,16 @@ export default ({isEditable})=>{
         <CamRow 
             key='all'
             cam={total}
-            isSelected={false} />
+            isSelected={false} 
+            showCamEditor={showCamEditor}
+            />
 
         {rows}
 
         {status!=='fulfilled' &&
         <div className="row-status">{status}</div>}
+
+        {dialog}
 
     </>
 }

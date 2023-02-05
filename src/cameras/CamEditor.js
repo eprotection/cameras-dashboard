@@ -1,11 +1,12 @@
 import React, {useState} from "react"
-import { hideDialog, onCamUpdated } from "./App"
-import {useFormInput} from "./FormUtils"
-import backend from './Backend'
+import {useFormInput} from "../FormUtils"
+import backend from '../Backend'
 
 const valOrEmpty = (value)=>value?value:''
 
-export default ({cam})=>{
+const onCamUpdated=()=>{}//STUB!
+
+export default ({cam, hideDialog})=>{
     // Input
     const onChange=()=>{if(error)setError(null)}
     const name     = useFormInput(cam.name,               onChange);
