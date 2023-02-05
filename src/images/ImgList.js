@@ -3,14 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectCheckedCameras } from "../cameras/camSlice";
 import { selectImages, getImageKey, clear, clearChecked, deleteChecked, loadImagesTail } from "./imgSlice";
 import Cell from "./ImageCell"
-import Selection from "./Selection"
 import Viewer from "../viewer/Viewer"
 import '../viewer/Viewer.css';
 
 
-export default (props)=>{
-    const {list,status,showMore,checked} = useSelector(selectImages)
-    const checkedCount = Object.keys(checked).length
+export default ()=>{
+    const {list,status,hasMore,checked} = useSelector(selectImages)
     const checkedCameras = useSelector(selectCheckedCameras)
     const dispatch = useDispatch()
 
@@ -48,24 +46,14 @@ export default (props)=>{
                     <span>LOADING...</span>
                 </div>}
 
-                {showMore &&
+                {hasMore &&
                 <div className="last-cell">
                     <span className="btn clk" onClick={()=>{dispatch(loadImagesTail())}}>show more</span>
                 </div>}
 
             </div>
         </div>
-        {checkedCount>0 && 
-            <Selection 
-                size={checkedCount}
-                onClear ={()=>{
-                    dispatch(clearChecked())
-                }}
-                onDelete={()=>{
-                    if(!window.confirm('Delete selected images?')) return;
-                    dispatch(deleteChecked())
-                }}/>
-        }
+                    
         {openImg && 
             <Viewer openImg={openImg} list={list} hideViewer={hideViewer}/>}
 

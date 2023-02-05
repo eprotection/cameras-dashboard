@@ -8,11 +8,12 @@ const PAGE_SIZE = 14
 
 // DATA
 const initialState = {
+    // Total images
     list       : [], // images for the selected cameras
-    status     : 'empty',
-    showMore   : false,
+    status     : 'empty', //TODO split into loadStatus + actionStatus
+    hasMore    : false,
+    // Checked images
     checked    : {} // checked images to make action for
-
 }
 export const selectImages  = (state) => state.images;
 export const getImageKey   = (image) => `${image.id}-${image.time}`
@@ -89,18 +90,18 @@ const slice = createSlice({
     extraReducers:{
         [loadImagesTail.pending]: state=>{
             state.status = 'pending'
-            state.showMore = false
+            state.hasMore = false
         },      
         [loadImagesTail.fulfilled]: (state,action)=>{
             const tail = action.payload;
             state.status = 'fulfilled';
             state.list.push(...tail)
-            state.showMore = tail.length==PAGE_SIZE
+            state.hasMore = tail.length==PAGE_SIZE
 
         },      
         [loadImagesTail.rejected]: state=>{
             state.status = 'rejected'
-            state.showMore = true
+            state.hasMore = true
         },      
 
         [deleteChecked.pending]: state=>{

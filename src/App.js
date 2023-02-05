@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {loadAuth, selectAuth} from './auth/authSlice'
 import CamList from "./cameras/CamList"
 import ImageList from "./images/ImgList"
+import ImgActions from "./images/ImgActions"
 import Settings from "./settings/Settings";
 
 const App = ()=>{
@@ -46,6 +47,8 @@ const App = ()=>{
     <div id="layout-data">
       <ImageList/>
     </div>
+
+    <ImgActions />
 
     {showSettings && 
       <Settings hide={()=>setShowSettings(false)}/> }
