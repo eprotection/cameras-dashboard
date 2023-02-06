@@ -18,7 +18,7 @@ export default ()=>{
         console.log('***** ImgList.reloadImages on checkedCameras change', checkedCameras)
         dispatch(clear())
         if(Object.keys(checkedCameras).length){
-            dispatch(loadImagesTail())
+            dispatch(loadImagesTail(checkedCameras))
         }
     },[checkedCameras])    
 
@@ -37,7 +37,7 @@ export default ()=>{
                         key={key} 
                         data={image}
                         camera={checkedCameras[image.id]}
-                        isChecked={Boolean(checked[key])}
+                        isChecked={Boolean(checked?.[key])}
                         showViewer={showViewer}/>
                 })}
 
@@ -48,7 +48,7 @@ export default ()=>{
 
                 {hasMore &&
                 <div className="last-cell">
-                    <span className="btn clk" onClick={()=>{dispatch(loadImagesTail())}}>show more</span>
+                    <span className="btn clk" onClick={()=>{dispatch(loadImagesTail(checkedCameras))}}>show more</span>
                 </div>}
 
             </div>

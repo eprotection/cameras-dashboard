@@ -1,8 +1,7 @@
-// IMAGES FOR SELECTED CAMERAS
+// IMAGES FOR A SET OF CAMERAS
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
-import { selectCheckedCameras } from "../cameras/camSlice";
 
 const PAGE_SIZE = 14
 
@@ -22,26 +21,23 @@ export const getImageKey   = (image) => `${image.id}-${image.time}`
 // MIDDLEWARE ASYNC THUNKS 
 export const loadImagesTail = createAsyncThunk(
     'images/load',
-    async (_, { getState }) => {
+    async (checkedCameras, { getState }) => {
         const state = getState()
         const { list } = selectImages(state);
-        const checkedCameras = selectCheckedCameras(state)
+       // const checkedCameras = selectCheckedCameras(state) - can be received from camSlice
 
         // Calculate parameters
         const ids = Object.keys(checkedCameras)
         const minTime = list.length>0?list[list.length-1].time : null
 
-        console.log('========= images: start loading...', minTime)
         let data = await backend.apiRequest('POST','/cameras/load_images',
             {  
                 ids,            
                 limit : PAGE_SIZE,
                 before: minTime
             })
+        //await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
 
-        await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
-
-        console.log('images:',data)
         // The value we return becomes the `fulfilled` action payload
         return data;
     }
