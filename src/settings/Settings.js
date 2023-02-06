@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux';
 import { selectAuth } from '../auth/authSlice'
 import { usePrefs, FTP_SERVER_ID,IP_SERVER_ID } from './prefs'
 import { useDialog } from "../dialog";
+import { createPortal } from 'react-dom';
 
-export default ({hide})=>{
+const Settings = ({hide})=>{
     const {user} = useSelector(selectAuth)
 
     const {prefs,error,savePref} = usePrefs()
@@ -41,7 +42,7 @@ export default ({hide})=>{
     </div>
 
   
-    return (<>
+    return createPortal(<>
     <div className="dialog-fog">
         <div className="dialog">
             <div className="title">SETTINGS</div>
@@ -57,5 +58,6 @@ export default ({hide})=>{
     
     {dialog}
     
-    </>)
+    </>, document.getElementById('app'))
 }
+export default Settings

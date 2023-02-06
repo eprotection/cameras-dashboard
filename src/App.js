@@ -61,7 +61,7 @@ const App = ()=>{
 
 
   return (
-    <div className={`App ${theme}`}>
+    <div id="app" className={`App ${theme}`}>
         {ws    && renderContent()}
         {error && renderError()}
     </div>

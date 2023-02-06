@@ -6,7 +6,7 @@ const valOrEmpty = (value)=>value?value:''
 
 const onCamUpdated=()=>{}//STUB!
 
-export default ({cam, hideDialog})=>{
+const CamEditor = ({cam, hideDialog})=>{
     // Input
     const onChange=()=>{if(error)setError(null)}
     const name     = useFormInput(cam.name,               onChange);
@@ -66,3 +66,5 @@ export default ({cam, hideDialog})=>{
 
     </form>)
 }
+
+export default CamEditor

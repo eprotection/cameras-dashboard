@@ -1,4 +1,4 @@
-import {useState,useEffect} from "react";
+import {useState,useEffect, useDebugValue} from "react";
 import backend from '../Backend'
 
 //----------------------------------------------------------------------------
@@ -24,6 +24,8 @@ async function loadPrefs(){
 export const usePrefs = ()=>{
     const [prefs, setPrefs] = useState(null)
     const [error, setError] = useState(null)
+
+    useDebugValue(prefs)
     
     useEffect(()=>{
         loadPrefs()

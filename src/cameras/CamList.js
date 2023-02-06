@@ -6,7 +6,7 @@ import {selectCameras, loadCamerasChanges} from './camSlice'
 import { useDialog } from "../dialog";
 import CamEditor from './CamEditor'
 
-export default ({isEditable})=>{
+const CamList = ({isEditable})=>{
     const {list, error, checked}= useSelector(selectCameras)
 
     console.log(`=> CamList`)
@@ -80,3 +80,4 @@ export default ({isEditable})=>{
 
     </>
 }
+export default CamList

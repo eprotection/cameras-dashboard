@@ -7,7 +7,7 @@ import Viewer from "../viewer/Viewer"
 import '../viewer/Viewer.css';
 
 
-export default ()=>{
+const ImgList = ()=>{
     const {list,status,hasMore,checked} = useSelector(selectImages)
     const checkedCameras = useSelector(selectCheckedCameras)
     const dispatch = useDispatch()
@@ -60,3 +60,4 @@ export default ()=>{
 
     </>);
 }
+export default ImgList

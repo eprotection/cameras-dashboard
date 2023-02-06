@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectCheckedCameras } from "../cameras/camSlice";
 import { selectImages, getImageKey, clear, clearChecked, deleteChecked, loadImagesTail } from "./imgSlice";
 
-export default ()=>{
+const ImgActions = ()=>{
     const {list,status,hasMore,checked} = useSelector(selectImages)
     const checkedCount = Object.keys(checked).length
 
@@ -32,3 +32,4 @@ export default ()=>{
         </span>
     </div>
 }    
+export default ImgActions

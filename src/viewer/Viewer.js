@@ -1,14 +1,15 @@
 import React from "react"
+import { createPortal } from "react-dom"
 import backend from '../Backend'
 
 
-export default ({openImg, list, hideViewer })=>{
+const Viewer = ({openImg, list, hideViewer })=>{
     const [index, setIndex] = React.useState(list.findIndex((img)=>img===openImg))
     const image = list[index]
 
     console.log(`=> Viewer #${index}/${list.length} ${image.file}`)
     
-    return (
+    return createPortal(
     <div className="viewer">
         <div className="container"> 
             <img src={`${backend.getApiUrl()}/cam/${image.id}/${image.file}`} />
@@ -19,5 +20,6 @@ export default ({openImg, list, hideViewer })=>{
             <div className="prev" onClick={()=>{setIndex(index-1)}}></div>}
         {index<list.length-1 &&
             <div className="next" onClick={()=>{setIndex(index+1)}}></div>}
-    </div>)
+    </div>, document.getElementById('app'))
 }
+export default Viewer
