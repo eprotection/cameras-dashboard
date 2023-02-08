@@ -18,28 +18,7 @@ const App = ()=>{
   // Settings dialog
   const [showSettings,setShowSettings] = useState(false)
 
-
   useEffect(()=>{dispatch(loadAuth())},[])
-
-  //-------------------------------------------------------------------
-  console.log('--------------------------------------------------------')
-  const A = function(){if(!new.target)console.log('function A')}
-  const B = ()=>{console.log('function B')}
-  const C = new Function("console.log('function C')")
-
-  console.log(A)
-  console.log(B)
-  console.log(C)
-  A();B();C()
-
-  const a = new A()
-  const c = new C()
-  const n = new Number(33)
-
-  console.log(a,c,n)
-  console.log(n.toFixed(1), (55).toFixed(1))
-
-  console.log('--------------------------------------------------------')
 
   //-------------------------------------------------------------------
   // RENDER

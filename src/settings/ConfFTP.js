@@ -14,6 +14,15 @@ import React from "react";
 // export default React.memo(ConfFTP);
 
 class ConfFTP extends React.Component{
+    constructor(props){
+        super(props)
+        //this.onClick = this.onClick.bind(this)
+    }
+
+    // Arrow callback example (Just for demo!)
+    onClick = ()=>{ 
+        console.log('ConfFTP onClick, this:',this.props.onClick)
+    }
 
     // Just for illustration
     shouldComponentUpdate(nextProps, nextState) {
@@ -31,7 +40,7 @@ class ConfFTP extends React.Component{
     
         return (
             <b className={onClick?"ftp clk":"ftp"}
-                onClick={onClick}>
+                onClick={this.onClick}>
                 {data?`${data.user}@${data.host}`:"[user@host]"}
             </b>)
     }
