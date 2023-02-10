@@ -2,7 +2,7 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
-import { checkCamera } from '../cameras/camSlice';
+import { updateCheckedCameras } from '../cameras/camSlice';
 
 const PAGE_SIZE = 14
 
@@ -70,7 +70,6 @@ const slice = createSlice({
     name: "images",
     initialState,
     reducers:{
-        clear: (state) => initialState,
         check: (state, action)=>{
             const img = action.payload
             const key = getImageKey(img)
@@ -115,7 +114,7 @@ const slice = createSlice({
         },    
         
         // camSlice reducer
-        [checkCamera]: state=>{
+        [updateCheckedCameras]: state=>{
             Object.assign(state,initialState) //state = initialState - doesn't work!!!
         }
     }

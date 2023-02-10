@@ -13,7 +13,7 @@ export const selectCameras         = (state) => state.cameras;
 export const selectCheckedCameras  = (state) => state.cameras.checked;
 
 //---------------------------------------------------------------------------------------
-// ASYNC ACTIONS ( THUNKS )
+// CUSTOM MIDDLEWARE (THUNKS)
 export const loadCamerasChanges = createAsyncThunk(
     'cameras/load',
     async (_, { getState }) => {
@@ -29,12 +29,21 @@ export const loadCamerasChanges = createAsyncThunk(
     }
 );
 
-//---------------------------------------------------------------------------------------
-// CUSTOM MIDDLEWARE
-// export const loadCamerasChanges = () => (dispatch, getState) => {
-//     const {mt} = selectCameras(getState());
-//     dispatch(loadList(mt));
-// };
+export const checkCamera = (cam) => (dispatch, getState) => {
+    console.log('checkCamera',cam.id)
+    const checked = selectCheckedCameras(getState())
+    if(checked[cam.id]) return
+    dispatch(updateCheckedCameras( {[cam.id]:cam} ))
+
+    //const cam = action.payload
+    // if( state.checked[cam.id]===undefined) 
+    //     state.checked[cam.id]=cam //append
+    // else
+    //     delete state.checked[cam.id] //remove
+
+    // const {mt} = selectCameras(getState());
+    // dispatch(loadList(mt));
+};
 
 
 //------------------------------------------------------------------------------------
@@ -43,12 +52,8 @@ const slice = createSlice({
     name: "cameras",
     initialState,
     reducers:{
-        checkCamera: (state, action)=>{
-            const cam = action.payload
-            if( state.checked[cam.id]===undefined) 
-                state.checked[cam.id]=cam //append
-            else
-                delete state.checked[cam.id] //remove
+        updateCheckedCameras: (state, action)=>{
+            state.checked = action.payload
         },
     },
     extraReducers:{
@@ -67,7 +72,7 @@ const slice = createSlice({
         },      
     }
 });
-export const { checkCamera } = slice.actions;
+export const { updateCheckedCameras } = slice.actions;
 
 
 export default slice.reducer;
