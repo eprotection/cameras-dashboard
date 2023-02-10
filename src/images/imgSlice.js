@@ -2,6 +2,7 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
+import { checkCamera } from '../cameras/camSlice';
 
 const PAGE_SIZE = 14
 
@@ -111,10 +112,15 @@ const slice = createSlice({
         },      
         [deleteChecked.rejected]: state=>{
             state.status = 'rejected'
-        },      
+        },    
+        
+        // camSlice reducer
+        [checkCamera]: state=>{
+            Object.assign(state,initialState) //state = initialState - doesn't work!!!
+        }
     }
 });
-export const { clear, clearChecked } = slice.actions;
+export const { clearChecked } = slice.actions;
 
 //---------------------------------------------------------------------------------------
 // CUSTOM MIDDLEWARE

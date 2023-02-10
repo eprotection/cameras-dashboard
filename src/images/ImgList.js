@@ -1,7 +1,7 @@
 import React,{useState,useEffect,useCallback} from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCheckedCameras } from "../cameras/camSlice";
-import { selectImages, getImageKey, clear, clearChecked, deleteChecked, loadImagesTail } from "./imgSlice";
+import { selectImages, getImageKey, loadImagesTail } from "./imgSlice";
 import Cell from "./ImageCell"
 import Viewer from "../viewer/Viewer"
 import '../viewer/Viewer.css';
@@ -16,7 +16,6 @@ const ImgList = ()=>{
 
     useEffect(()=>{
         console.log('***** ImgList.reloadImages on checkedCameras change', checkedCameras)
-        dispatch(clear())
         if(Object.keys(checkedCameras).length){
             dispatch(loadImagesTail(checkedCameras))
         }
