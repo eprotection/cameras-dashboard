@@ -7,7 +7,7 @@ import { usePrefs, FTP_SERVER_ID,IP_SERVER_ID } from './prefs'
 import { useDialog } from "../dialog";
 import { createPortal } from 'react-dom';
 
-const Settings = ({hide})=>{
+const Settings = ({hide,children})=>{
     const {user} = useSelector(selectAuth)
 
     const {prefs,error,savePref} = usePrefs()
@@ -46,6 +46,7 @@ const Settings = ({hide})=>{
     <div className="dialog-fog">
         <div className="dialog">
             <div className="title">SETTINGS</div>
+            {children}
             {prefs && renderPrefs()}
             {error && <div>{error}</div>}
             {!prefs&&!error && <div>Loading prefs...</div>}

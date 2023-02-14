@@ -32,9 +32,6 @@ const App = ()=>{
         <div>{user?user.name:"Guest"}</div>
         <div>{user?.role}</div>
       </div>
-      <span className="btn clk" onClick={toggleTheme}>
-        Set {theme=='dark'?'light':'dark'} theme
-      </span>
       <span className="clk icon gear" onClick={()=>setShowSettings(true)}></span>
     </header>
    
@@ -51,7 +48,11 @@ const App = ()=>{
     <ImgActions />
 
     {showSettings && 
-      <Settings hide={()=>setShowSettings(false)}/> }
+      <Settings hide={()=>setShowSettings(false)}>
+        <span className="btn clk" onClick={toggleTheme}>
+          Set {theme=='dark'?'light':'dark'} theme
+        </span>
+      </Settings> }
   </>
 
   const renderError=()=>
