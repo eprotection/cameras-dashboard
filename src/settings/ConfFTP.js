@@ -21,7 +21,8 @@ class ConfFTP extends React.Component{
 
     // Arrow callback example (Just for demo!)
     onClick = ()=>{ 
-        console.log('ConfFTP onClick, this:',this.props.onClick)
+        //console.log('ConfFTP onClick, this:',this.props.onClick)
+        this.props.onClick()
     }
 
     // Just for illustration

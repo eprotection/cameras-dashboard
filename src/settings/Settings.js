@@ -4,8 +4,7 @@ import FormFTP from "./FormFTP"
 import { useSelector } from 'react-redux';
 import { selectAuth } from '../auth/authSlice'
 import { usePrefs, FTP_SERVER_ID,IP_SERVER_ID } from './prefs'
-import { useDialog } from "../dialog";
-import { createPortal } from 'react-dom';
+import Dialog, {useDialog} from "../Dialog";
 
 const Settings = ({hide,children})=>{
     const {user} = useSelector(selectAuth)
@@ -15,22 +14,24 @@ const Settings = ({hide,children})=>{
     // DIALOGS
     const {dialog,showDialog,hideDialog} = useDialog()
     const showFtpDialog = ()=>showDialog(
-        'Cameras FTP',
-        <FormFTP 
-            ftp={prefs[FTP_SERVER_ID]}
-            useFolder={false}
-            onFinished={hideDialog}
-            onSaveAsync={async (value)=>{await savePref(FTP_SERVER_ID,value)}}
-        />
+        <Dialog title='Cameras FTP'>
+            <FormFTP 
+                ftp={prefs[FTP_SERVER_ID]}
+                useFolder={false}
+                onFinished={hideDialog}
+                onSaveAsync={async (value)=>{await savePref(FTP_SERVER_ID,value)}}
+            />
+        </Dialog>
     )
     const showIpDialog = ()=>showDialog(
-        'Image Processor FTP',
-        <FormFTP 
-            ftp={prefs[IP_SERVER_ID]}
-            useFolder={true}
-            onFinished={hideDialog}
-            onSaveAsync={async (value)=>{await savePref(IP_SERVER_ID,value)}}
-        />
+        <Dialog title='Image Processor FTP'>
+            <FormFTP 
+                ftp={prefs[IP_SERVER_ID]}
+                useFolder={true}
+                onFinished={hideDialog}
+                onSaveAsync={async (value)=>{await savePref(IP_SERVER_ID,value)}}
+            />
+        </Dialog>
     )
 
     // RENDER
@@ -42,23 +43,18 @@ const Settings = ({hide,children})=>{
     </div>
 
   
-    return createPortal(<>
-    <div className="dialog-fog">
-        <div className="dialog">
-            <div className="title">SETTINGS</div>
-            {children}
-            {prefs && renderPrefs()}
-            {error && <div>{error}</div>}
-            {!prefs&&!error && <div>Loading prefs...</div>}
-            <div className="bar">
-                <span className="btn clk" 
-                    onClick={hide}>Close</span>
-            </div>
+    return <Dialog title="SETTINGS">
+        {children}
+        {prefs && renderPrefs()}
+        {error && <div>{error}</div>}
+        {!prefs&&!error && <div>Loading prefs...</div>}
+        <div className="bar">
+            <span className="btn clk" 
+                onClick={hide}>Close</span>
         </div>
-    </div>
     
-    {dialog}
+        {dialog}
     
-    </>, document.getElementById('app'))
+    </Dialog>
 }
 export default Settings

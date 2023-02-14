@@ -1,36 +1,30 @@
-import React,{useEffect,useCallback} from "react"
+import React,{useState,useEffect,useCallback} from "react"
 import CamRow from './CamRow'
 import './Camera.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
-import { useDialog } from "../dialog";
 import CamEditor from './CamEditor'
 import {formatDate} from "../Utils"
 
 
 const CamList = ({isEditable})=>{
+    // Store
     const {list, error, checked}= useSelector(selectCameras)
-
-    console.log(`=> CamList`)
-
     const dispatch = useDispatch()
 
+    // Load on start
     useEffect(()=>{dispatch(loadCamerasChanges())},[])
 
-    const {dialog,showDialog,hideDialog} = useDialog()
-    const showCamEditor = useCallback( cam=>{
-        console.log("showCamEditor cam:",cam)
-        showDialog(
-            'Camera Editor',
-            <CamEditor cam={cam} hideDialog={hideDialog}/>
-        )
-      
-    },[])
-
+    // Open camera
+    const [openCam, setOpenCam] = useState(null)
+    const showCamEditor = useCallback( (cam)=>setOpenCam(cam), [])
+    const hideCamEditor = useCallback(  ()  =>setOpenCam(null),[])
 
     //------------------------------------------------------------------------
     // RENDER
     // Calculate total by the way
+    console.log(`=> CamList`)
+
     let total = {
         img_num     : 0,
         img_lasttime: null
@@ -78,7 +72,9 @@ const CamList = ({isEditable})=>{
         {error&&          <div className="cam-status err">Cameras loading error:<br/>{error}</div>}
         {!list&&!error && <div className="cam-status">Cameras loading...</div>}
 
-        {dialog}
+        {openCam&& <CamEditor cam={openCam} hideDialog={hideCamEditor}/>
+
+    }
 
     </div>
 }
