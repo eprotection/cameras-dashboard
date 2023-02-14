@@ -8,6 +8,7 @@ import CamList from "./cameras/CamList"
 import ImageList from "./images/ImgList"
 import ImgActions from "./images/ImgActions"
 import Settings from "./settings/Settings";
+import Filters from "./filters/Filters";
 
 const App = ()=>{
   // Theme
@@ -32,6 +33,7 @@ const App = ()=>{
         <div>{user?user.name:"Guest"}</div>
         <div>{user?.role}</div>
       </div>
+      <Filters/>
       <span className="clk icon gear" onClick={()=>setShowSettings(true)}></span>
     </header>
    

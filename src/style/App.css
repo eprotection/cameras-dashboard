@@ -30,6 +30,8 @@
   border-radius: 0.5em;     
   width:2em; height:2em;
 }
+.dark  .icon.filter{background-image: url(/public/filter-white.svg);}
+.light .icon.filter{background-image: url(/public/filter-black.svg);}
 .dark  .icon.gear  {background-image: url(/public/gear-white.svg);}
 .light .icon.gear  {background-image: url(/public/gear-black.svg);}
 .dark  .icon.close {background-image: url(/public/close-white.svg);}
