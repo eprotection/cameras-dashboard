@@ -21,13 +21,13 @@ code {
 .App{  display:grid;}
 
 header       {grid-area: header; }/*background: #282c34;*/
-#layout-list {grid-area: list;   overflow-y: auto; padding: 0.2em;}
-#layout-data {grid-area: data;   overflow-y: auto;}
+#layout-list {grid-area: list; position: relative;  }
+#layout-data {grid-area: data; position: relative;  overflow-y: auto;}
 
 @media all and (orientation:landscape){
   .App{
-      grid-template-rows:    3em 1fr;
-      grid-template-columns: fit-content(20em) 2fr;
+      grid-template-rows:     3em 1fr;
+      grid-template-columns: 20em 2fr;
       grid-template-areas: 
       "header header"
       "list data";

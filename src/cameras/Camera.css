@@ -1,9 +1,20 @@
-.row-header{
+.cam-container{
+    position:absolute;
+    top:0;left:0;bottom:0;right:0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+.cam-header, .cam-footer{
     display: grid;
     grid-template-columns: 1fr 6em 5em;
-    border-bottom: 1px solid #888;
-    padding-bottom: 0.3em;
-    margin-bottom: 0.3em;
+    padding: 0.3em 0em;
+}
+.cam-header{border-bottom: 1px solid #888;}
+.cam-footer{border-top:    1px solid #888;}
+
+.cam-list{
+    overflow-y: auto; 
 }
 .cam-status{
     padding: 2em 1em;
@@ -11,59 +22,60 @@
     font-size: 150%;
 }
 
-.row {
+.cam-row {
     padding:0.5em;
     text-align: left;
+    margin-top: 0.3em;
     margin-bottom: 0.3em;
     border-radius: 10px;
     cursor: pointer;
 }  
-.dark  .row{background-color: #333;}
-.light .row{background-color: #eee;}
-.dark  .row.selected {background-color: #055;}
-.light .row.selected {background-color: #0ff;}
+.dark  .cam-row{background-color: #333;}
+.light .cam-row{background-color: #eee;}
+.dark  .cam-row.selected {background-color: #055;}
+.light .cam-row.selected {background-color: #0ff;}
 
-.row .main{
+.cam-row .main{
     display: grid;
     grid-template-columns: 1fr 6em 5em;
 }
-.row .name{
+.cam-row .name{
     font-size: 110%;
     font-weight: normal;
 }
-.dark  .row .name {color: aqua;}
-.light .row .name {color: #008;}
+.dark  .cam-row .name {color: aqua;}
+.light .cam-row .name {color: #008;}
 
-.row .stat{
+.cam-row .stat{
     font-weight: normal;
     text-align: right;
 }
 
-.row .details{
+.cam-row .details{
     position: relative;
 }
 
-.row .details  > div {
+.cam-row .details  > div {
     font-style: italic;
     font-family: monospace;
 }
-.row .details  > div {
+.cam-row .details  > div {
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
     column-gap: 2em;
 }
-.row .details  b {
+.cam-row .details  b {
     margin-left: 0.4em;
     font-style: normal;
 }
-.row .details .icon.edit {
+.cam-row .details .icon.edit {
     position:absolute;
     top:0.5em; right:0em;
     width:2em; height:2em;
 }
-.dark  .row .details .icon.edit {background-image: url(/public/edit-white.svg);}
-.light .row .details .icon.edit {background-image: url(/public/edit-black.svg);}
+.dark  .cam-row .details .icon.edit {background-image: url(/public/edit-white.svg);}
+.light .cam-row .details .icon.edit {background-image: url(/public/edit-black.svg);}
 
 
 

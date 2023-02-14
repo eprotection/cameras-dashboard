@@ -12,7 +12,7 @@ class CamRow extends React.PureComponent{
         console.log(`=>CamRow #${cam.id} ${cam.name} isSelected:${isSelected} isEditable:${isEditable}`)
 
         return (
-            <div className={`row ${isSelected?'selected':''}`}
+            <div className={`cam-row ${isSelected?'selected':''}`}
                 onClick={()=>{store.dispatch(checkCamera(cam))}}>
                 <div className='main'>
                     <span className='name'>{cam.name}</span>

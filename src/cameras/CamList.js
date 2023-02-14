@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
 import { useDialog } from "../dialog";
 import CamEditor from './CamEditor'
+import {formatDate} from "../Utils"
+
 
 const CamList = ({isEditable})=>{
     const {list, error, checked}= useSelector(selectCameras)
@@ -25,14 +27,15 @@ const CamList = ({isEditable})=>{
       
     },[])
 
-    // Calculate total a-la cam
+
+    //------------------------------------------------------------------------
+    // RENDER
+    // Calculate total by the way
     let total = {
-        id          : 'all',
-        name        : "ALL CAMERAS",
         img_num     : 0,
         img_lasttime: null
     }
-
+    
     const renderList = ()=>{
         const rows = [...list]
         .sort((a,b)=>a.name.localeCompare(b.name))
@@ -54,30 +57,29 @@ const CamList = ({isEditable})=>{
                 showCamEditor={showCamEditor}
             />
         })
-    
-        return <>
-        <div className="row-header">
-            <span>name</span><span>last</span><span>total</span>
-        </div>
-        
-        <CamRow 
-            key='all'
-            cam={total}
-            isSelected={false} 
-            showCamEditor={showCamEditor}
-            />
 
-        {rows}
+        return <>
+            <div className="cam-header">
+                <span>name</span><span>last</span><span>total</span>
+            </div>
+            
+            <div className="cam-list">
+                {rows}
+            </div>
+
+            <div className="cam-footer">
+                <span></span><span>{formatDate(total.img_lasttime)}</span><span>{total.img_num}</span>
+            </div>
         </>
     }
-        
-    return <>
+
+    return <div className="cam-container">
         {list && renderList()}
         {error&&          <div className="cam-status err">Cameras loading error:<br/>{error}</div>}
         {!list&&!error && <div className="cam-status">Cameras loading...</div>}
 
         {dialog}
 
-    </>
+    </div>
 }
 export default CamList
