@@ -20,26 +20,28 @@ code {
 
 .App{  display:grid;}
 
-header       {grid-area: header; }/*background: #282c34;*/
-#layout-list {grid-area: list; position: relative;  }
-#layout-data {grid-area: data; position: relative;  overflow-y: auto;}
+header           {grid-area: header; }/*background: #282c34;*/
+#layout-splitter {grid-area: splitter; }
+#layout-list     {grid-area: list; position: relative;  }
+#layout-data     {grid-area: data; position: relative;  }
 
 @media all and (orientation:landscape){
   .App{
       grid-template-rows:     3em 1fr;
-      grid-template-columns: 20em 2fr;
+      grid-template-columns: 20em 0.5em 2fr;
       grid-template-areas: 
-      "header header"
-      "list data";
+      "header header header"
+      "list splitter data";
   }
 }
 @media all and (orientation:portrait){
   .App{
-      grid-template-rows:    3em 1fr 2fr;
+      grid-template-rows:    3em 1fr 0.5em 2fr;
       grid-template-columns: 1fr;
       grid-template-areas: 
       "header"
       "list"
+      "splitter"
       "data";
   }
 }

@@ -1,18 +1,19 @@
-.cell-container{
+.img-container{
+    position:absolute;
+    top:0;left:0;bottom:0;right:0;
+    padding: 0em;
+    overflow-y: auto;
+}
+.img-grid{
     /*display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     align-content: flex-start;*/
     display: grid;
-    grid-template-columns: repeat(auto-fill, 15em);
+    grid-template-columns: repeat(auto-fit, minmax(15em,1fr)); /*repeat(auto-fill, 15em);*/
     justify-content: space-around;
     grid-gap: 0.3em;
 }
-/*.item-container::after {
-    content: "";
-    flex: auto;
-  }*/
-
 .cell{
     margin: 0em;
     padding: 0.5em;

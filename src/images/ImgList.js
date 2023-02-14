@@ -28,8 +28,8 @@ const ImgList = ()=>{
 
 
     return (<>
-        <div>
-            <div className="cell-container">
+        <div className="img-container">
+            <div className="img-grid">
                 {list.map(image=>{
                     const key = getImageKey(image)
                     return <Cell 

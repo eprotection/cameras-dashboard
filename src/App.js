@@ -42,6 +42,8 @@ const App = ()=>{
       <CamList isEditable={user?true:false}/>
     </div>
 
+    <div id="layout-splitter"></div>
+
     <div id="layout-data">
       <ImageList/>
     </div>
