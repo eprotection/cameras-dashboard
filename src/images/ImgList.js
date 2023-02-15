@@ -15,11 +15,11 @@ const ImgList = ()=>{
     console.log("=> ImgList")
 
     useEffect(()=>{
-        console.log('***** ImgList.reloadImages on checkedCameras change', checkedCameras)
-        if(Object.keys(checkedCameras).length){
-            dispatch(loadImagesTail(checkedCameras))
+        if(status==='empty'){
+            console.log('***** ImgList: load images if empty, status:', status)
+            dispatch(loadImagesTail())
         }
-    },[checkedCameras])    
+    },[status])    
 
     // Image viewer
     const [openImg, setOpenImage] = useState(null) 
@@ -47,7 +47,7 @@ const ImgList = ()=>{
 
                 {hasMore &&
                 <div className="last-cell">
-                    <span className="btn clk" onClick={()=>{dispatch(loadImagesTail(checkedCameras))}}>show more</span>
+                    <span className="btn clk" onClick={()=>{dispatch(loadImagesTail())}}>show more</span>
                 </div>}
 
             </div>

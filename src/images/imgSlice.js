@@ -2,7 +2,7 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
-import { updateCheckedCameras } from '../cameras/camSlice';
+import { selectCheckedCameras,updateCheckedCameras } from '../cameras/camSlice';
 
 const PAGE_SIZE = 14
 
@@ -10,7 +10,7 @@ const PAGE_SIZE = 14
 const initialState = {
     // Total images
     list       : [], // images for the selected cameras
-    status     : 'empty', //TODO split into loadStatus + actionStatus
+    status     : 'empty', //TODO split into loadStatus + actionStatus ?
     hasMore    : false,
     // Checked images
     checked    : {} // checked images to make action for
@@ -22,15 +22,20 @@ export const getImageKey   = (image) => `${image.id}-${image.time}`
 // MIDDLEWARE ASYNC THUNKS 
 export const loadImagesTail = createAsyncThunk(
     'images/load',
-    async (checkedCameras, { getState }) => {
+    async (_, { getState }) => {
+        // Load filters
         const state = getState()
         const { list } = selectImages(state);
-       // const checkedCameras = selectCheckedCameras(state) - can be received from camSlice
-
-        // Calculate parameters
+        const checkedCameras = selectCheckedCameras(state)
         const ids = Object.keys(checkedCameras)
+
+        // Verify filters
+        if(ids.length==0) return [] //empty but fulfilled!!!
+
+        // Calculate min time
         const minTime = list.length>0?list[list.length-1].time : null
 
+        // DO REQUEST
         let data = await backend.apiRequest('POST','/cameras/load_images',
             {  
                 ids,            
@@ -115,6 +120,7 @@ const slice = createSlice({
         
         // camSlice reducer
         [updateCheckedCameras]: state=>{
+            // set 'empty' status !!!
             Object.assign(state,initialState) //state = initialState - doesn't work!!!
         }
     }
