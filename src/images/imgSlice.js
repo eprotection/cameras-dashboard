@@ -3,7 +3,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
 import { selectCheckedCameras,updateCheckedCameras } from '../cameras/camSlice';
-import { setStatusFilter } from '../filters/filtersSlice';
+import { selectFilters, setStatusFilter } from '../filters/filtersSlice';
 
 const PAGE_SIZE = 14
 
@@ -24,22 +24,31 @@ export const getImageKey   = (image) => `${image.id}-${image.time}`
 export const loadImagesTail = createAsyncThunk(
     'images/load',
     async (_, { getState }) => {
-        // Load filters
+
+        // LOAD FILTERS
         const state = getState()
-        const { list } = selectImages(state);
+        // Cam ids filter
         const checkedCameras = selectCheckedCameras(state)
         const ids = Object.keys(checkedCameras)
+        // Image status filter
+        const { statusFilter } = selectFilters(state)
+        const statuses = []
+        Object.entries(statusFilter).forEach(([key,value])=>{
+            if(value) statuses.push(key)
+        })
 
-        // Verify filters
+        // VERIFY FILTERS
         if(ids.length==0) return [] //empty but fulfilled!!!
 
-        // Calculate min time
+        // Calculate min time by the image list
+        const { list } = selectImages(state);
         const minTime = list.length>0?list[list.length-1].time : null
 
         // DO REQUEST
         let data = await backend.apiRequest('POST','/cameras/load_images',
             {  
-                ids,            
+                ids,     
+                statuses, 
                 limit : PAGE_SIZE,
                 before: minTime
             })
@@ -101,7 +110,8 @@ const slice = createSlice({
             state.hasMore = tail.length==PAGE_SIZE
 
         },      
-        [loadImagesTail.rejected]: state=>{
+        [loadImagesTail.rejected]: (state,action)=>{
+            console.log('!!! loadImagesTail.rejected ',action.error)
             state.status = 'rejected'
             state.hasMore = true
         },      
