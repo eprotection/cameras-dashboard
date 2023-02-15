@@ -3,15 +3,9 @@ import backend from '../Backend'
 import {formatDateTime} from '../Utils'
 import './Image.css';
 import { store } from '../store';
+import {IMAGE_STATUSES} from '../filters/filtersSlice'
 
 
-const STATUS = new Map([
-    [ 0, ''],
-    [10, 'original'],
-    [20, 'processing'],
-    [30, 'classified'],
-    [40, 'not-classified']
-])
 
 class Cell extends React.PureComponent{
     render(){        
@@ -23,7 +17,7 @@ class Cell extends React.PureComponent{
             <div>{camera?.name}</div>
             <div>{formatDateTime(data.time, camera?.timezone)}</div>
             <div>{data.width}x{data.height}, {Math.round(data.size/1000)} Kb</div>
-            <div>{STATUS.get(data.status)}</div>
+            <div>{IMAGE_STATUSES.get(data.status)}</div>
             <div className={"select"+(isChecked?" checked":"")} 
                 onClick={(e)=>{e.stopPropagation();
                     store.dispatch({type:"images/check",payload:data})}}></div>

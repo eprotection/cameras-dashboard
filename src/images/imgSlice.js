@@ -3,6 +3,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
 import { selectCheckedCameras,updateCheckedCameras } from '../cameras/camSlice';
+import { setStatusFilter } from '../filters/filtersSlice';
 
 const PAGE_SIZE = 14
 
@@ -118,11 +119,17 @@ const slice = createSlice({
             state.status = 'rejected'
         },    
         
+        // CLEAR ON FILTERS CHANGE
         // camSlice reducer
         [updateCheckedCameras]: state=>{
             // set 'empty' status !!!
             Object.assign(state,initialState) //state = initialState - doesn't work!!!
-        }
+        },
+        // filtersSlice reducer
+        [setStatusFilter]: state=>{
+            // set 'empty' status !!!
+            Object.assign(state,initialState) //state = initialState - doesn't work!!!
+        },
     }
 });
 export const { clearChecked } = slice.actions;

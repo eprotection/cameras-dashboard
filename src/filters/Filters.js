@@ -6,7 +6,7 @@ const Filters=()=>{
 
     return <>
         <span className="clk icon filter" onClick={()=>setOpen(true)} ></span>
-        {open&& <FiltersDialog hide={()=>setOpen(false)}/> }
+        {open&& <FiltersDialog handleHide={()=>setOpen(false)}/> }
     </>
 }
 export default Filters
