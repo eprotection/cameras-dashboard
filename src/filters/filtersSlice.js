@@ -19,6 +19,14 @@ const initialState = {
 
 export const selectFilters         = (state) => state.filters;
 
+export const makeFiltersRequest = (state)=>{
+    const { statusFilter } = selectFilters(state)
+    const statuses = []
+    Object.entries(statusFilter).forEach(([key,value])=>{
+        if(value) statuses.push(key)
+    })
+    return {statuses}
+}
 
 //------------------------------------------------------------------------------------
 // THE SLICE

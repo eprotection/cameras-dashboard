@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
+import { setStatusFilter, makeFiltersRequest } from '../filters/filtersSlice';
 
 // DATA
 const initialState = {
@@ -17,11 +18,19 @@ export const selectCheckedCameras  = (state) => state.cameras.checked;
 export const loadCamerasChanges = createAsyncThunk(
     'cameras/load',
     async (_, { getState }) => {
-        const {mt} = selectCameras(getState());
-        console.log('cameras: start loading...', mt)
-        let data = await backend.apiRequest('POST','/cameras/load_list',{mt})
+        const state = getState()
+        const {mt} = selectCameras(state);
 
-        await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
+        const filters = makeFiltersRequest(state)
+
+        console.log('cameras: start loading...', mt)
+        let data = await backend.apiRequest('POST','/cameras/load_list',
+            {
+                mt,
+                ...filters
+            })
+
+        //await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
 
         console.log('cameras:',data)
         // The value we return becomes the `fulfilled` action payload
@@ -70,6 +79,14 @@ const slice = createSlice({
             state.list = null
             state.error = action.error?.message
         },      
+
+        // CLEAR ON FILTERS CHANGE
+        // filtersSlice reducer
+        [setStatusFilter]: state=>{
+            // set 'need to rload' status !!!
+            state.mt = 0
+        },
+
     }
 });
 export const { updateCheckedCameras } = slice.actions;

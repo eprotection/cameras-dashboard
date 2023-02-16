@@ -3,7 +3,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
 import { selectCheckedCameras,updateCheckedCameras } from '../cameras/camSlice';
-import { selectFilters, setStatusFilter } from '../filters/filtersSlice';
+import { setStatusFilter, makeFiltersRequest } from '../filters/filtersSlice';
 
 const PAGE_SIZE = 14
 
@@ -31,11 +31,7 @@ export const loadImagesTail = createAsyncThunk(
         const checkedCameras = selectCheckedCameras(state)
         const ids = Object.keys(checkedCameras)
         // Image status filter
-        const { statusFilter } = selectFilters(state)
-        const statuses = []
-        Object.entries(statusFilter).forEach(([key,value])=>{
-            if(value) statuses.push(key)
-        })
+        const filters = makeFiltersRequest(state)
 
         // VERIFY FILTERS
         if(ids.length==0) return {results:[], rest:0} //empty but fulfilled!!!
@@ -48,7 +44,7 @@ export const loadImagesTail = createAsyncThunk(
         let data = await backend.apiRequest('POST','/cameras/load_images',
             {  
                 ids,     
-                statuses, 
+                ...filters, 
                 limit : PAGE_SIZE,
                 before: minTime
             })

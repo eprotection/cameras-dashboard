@@ -9,11 +9,14 @@ import {formatDate} from "../Utils"
 
 const CamList = ({isEditable})=>{
     // Store
-    const {list, error, checked}= useSelector(selectCameras)
+    const {mt,list, error, checked}= useSelector(selectCameras)
     const dispatch = useDispatch()
 
-    // Load on start
-    useEffect(()=>{dispatch(loadCamerasChanges())},[])
+    // Load if need (mt===0)
+    useEffect(()=>{
+        if(mt===0)
+            dispatch(loadCamerasChanges())
+    },[mt])
 
     // Open camera
     const [openCam, setOpenCam] = useState(null)
