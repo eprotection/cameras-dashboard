@@ -8,7 +8,7 @@ import '../viewer/Viewer.css';
 
 
 const ImgList = ()=>{
-    const {list,status,hasMore,checked} = useSelector(selectImages)
+    const {list,status,rest,checked} = useSelector(selectImages)
     const checkedCameras = useSelector(selectCheckedCameras)
     const dispatch = useDispatch()
 
@@ -45,9 +45,10 @@ const ImgList = ()=>{
                     <span>LOADING...</span>
                 </div>}
 
-                {hasMore &&
+                {rest>0 &&
                 <div className="last-cell">
-                    <span className="btn clk" onClick={()=>{dispatch(loadImagesTail())}}>show more</span>
+                    <span className="btn clk" 
+                    onClick={()=>{dispatch(loadImagesTail())}}>remains {rest}</span>
                 </div>}
 
             </div>

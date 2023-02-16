@@ -4,7 +4,7 @@ import { selectCheckedCameras } from "../cameras/camSlice";
 import { selectImages, getImageKey, clear, clearChecked, deleteChecked, loadImagesTail } from "./imgSlice";
 
 const ImgActions = ()=>{
-    const {list,status,hasMore,checked} = useSelector(selectImages)
+    const {list,status,rest,checked} = useSelector(selectImages)
     const checkedCount = Object.keys(checked).length
 
     const dispatch = useDispatch()

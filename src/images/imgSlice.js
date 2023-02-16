@@ -12,7 +12,7 @@ const initialState = {
     // Total images
     list       : [], // images for the selected cameras
     status     : 'empty', //TODO split into loadStatus + actionStatus ?
-    hasMore    : false,
+    rest    : 0,
     // Checked images
     checked    : {} // checked images to make action for
 }
@@ -38,7 +38,7 @@ export const loadImagesTail = createAsyncThunk(
         })
 
         // VERIFY FILTERS
-        if(ids.length==0) return [] //empty but fulfilled!!!
+        if(ids.length==0) return {results:[], rest:0} //empty but fulfilled!!!
 
         // Calculate min time by the image list
         const { list } = selectImages(state);
@@ -53,6 +53,7 @@ export const loadImagesTail = createAsyncThunk(
                 before: minTime
             })
         //await new Promise((resolve)=>{setTimeout(() => {resolve()}, 1000)})// FOR DEBUG
+        console.log('/cameras/load_images',data)
 
         // The value we return becomes the `fulfilled` action payload
         return data;
@@ -101,19 +102,17 @@ const slice = createSlice({
     extraReducers:{
         [loadImagesTail.pending]: state=>{
             state.status = 'pending'
-            state.hasMore = false
         },      
         [loadImagesTail.fulfilled]: (state,action)=>{
-            const tail = action.payload;
+            const {results,rest} = action.payload;
             state.status = 'fulfilled';
-            state.list.push(...tail)
-            state.hasMore = tail.length==PAGE_SIZE
+            state.list.push(...results)
+            state.rest = rest
 
         },      
         [loadImagesTail.rejected]: (state,action)=>{
             console.log('!!! loadImagesTail.rejected ',action.error)
             state.status = 'rejected'
-            state.hasMore = true
         },      
 
         [deleteChecked.pending]: state=>{
