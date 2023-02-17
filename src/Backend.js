@@ -10,13 +10,7 @@ export class ApiError{
 
 var API_URL = null // will be set by init()
 
-const init = ()=>{
-    if(API_URL) return;
-    // Workspace
-    const urlParams = new URLSearchParams(window.location.search)
-    let ws = urlParams.get('ws')
-    if(!ws) throw('workspace ("ws") is not present in the window query')
-    
+export const apiInit = (ws)=>{
     // Backend URL 
     let protocol = window.location.protocol
     let port     = protocol==='http:' ? 8080 : 8443;
@@ -28,7 +22,6 @@ const init = ()=>{
 //----------------------------------------------------------------
 // SEND JSON
 export const apiRequest = async function(method, path, json){
-    if(!API_URL) init();
     
     let params = {
         method: method,
@@ -57,8 +50,8 @@ export const apiRequest = async function(method, path, json){
 }
 
 export default {
-    init       : init,
-    apiRequest : apiRequest,
+    apiInit,
+    apiRequest,
     getApiUrl  : ()=>API_URL
 }
 

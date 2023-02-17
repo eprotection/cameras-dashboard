@@ -2,10 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
 
 // DATA
+
 const initialState = {
-    ws       : null,
+    ws       : (new URL(window.location)).searchParams.get('ws'),// ws id
+    workspace: null, //ws info received from server, null means reload required
     user     : null,
-    error    : null
+    error    : null,
 }
 
 export const selectAuth         = (state) => state.auth;
@@ -14,9 +16,15 @@ export const selectAuth         = (state) => state.auth;
 // ASYNC ACTIONS ( THUNKS )
 export const loadAuth = createAsyncThunk(
     'auth/load',
-    async () => {
+    async (_,{ getState }) => {
+        const state = getState()
+        const {ws} = selectAuth(state);
+        if(!ws) throw 'parameter "ws" is not present in the URL query'
+
+        // Init API
+        backend.apiInit(ws)
         // Load ws info
-        const ws = await backend.apiRequest('GET','/')
+        const workspace = await backend.apiRequest('GET','/')
 
         // Load user info
         let user = null
@@ -27,12 +35,12 @@ export const loadAuth = createAsyncThunk(
                 role : auth.role.name
             }
         }catch(e){
-            if(!ws.prefs?.allowPublic) throw e
+            if(!workspace.prefs?.allowPublic) throw e
         }
 
         // The value we return becomes the `fulfilled` action payload
         return {
-            ws,
+            workspace,
             user,
             error:null
         }

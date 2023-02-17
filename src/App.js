@@ -15,20 +15,24 @@ const App = ()=>{
   const [theme,toggleTheme] = useTheme()
   // Store
   const dispatch = useDispatch()
-  const {ws,user,error} = useSelector(selectAuth)
+  const {workspace,user,error} = useSelector(selectAuth)
   // Settings dialog
   const [showSettings,setShowSettings] = useState(false)
 
-  useEffect(()=>{dispatch(loadAuth())},[])
+  // Load auth info if required
+  useEffect(()=>{
+    if(!workspace)
+      dispatch(loadAuth())
+  },[workspace])
 
   //-------------------------------------------------------------------
   // RENDER
-  console.log(`=>App ws:${ws}`)
+  console.log(`=>App workspace`,workspace)
   const renderContent=()=>
   <>
     <header className="App-header">
       <img src={logo} className="App-logo" alt="logo" />
-      <span className='title'>{ws?.name}</span>
+      <span className='title'>{workspace?.name}</span>
       <div className="user" >
         <div>{user?user.name:"Guest"}</div>
         <div>{user?.role}</div>
@@ -65,8 +69,8 @@ const App = ()=>{
 
   return (
     <div id="app" className={`App ${theme}`}>
-        {ws    && renderContent()}
-        {error && renderError()}
+        {workspace  && renderContent()}
+        {error      && renderError()}
     </div>
   )  
 }
