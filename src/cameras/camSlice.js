@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import backend from '../Backend'
-import { setStatusFilter, makeFiltersRequest } from '../filters/filtersSlice';
+import { updateStatusFilter, makeFiltersRequest } from '../filters/filtersSlice';
 
 // DATA
 const initialState = {
@@ -82,7 +82,7 @@ const slice = createSlice({
 
         // CLEAR ON FILTERS CHANGE
         // filtersSlice reducer
-        [setStatusFilter]: state=>{
+        [updateStatusFilter]: state=>{
             // set 'need to rload' status !!!
             state.mt = 0
         },
