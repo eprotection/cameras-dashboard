@@ -5,7 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import {selectCameras, loadCamerasChanges} from './camSlice'
 import CamEditor from './CamEditor'
 import {formatDate} from "../Utils"
+import { useSort } from "../useSort";
 
+const sortFunctions = {
+    name   : (a,b)=>a.name.localeCompare(b.name),
+    last   : (a,b)=>a.img_lasttime-b.img_lasttime,
+    images : (a,b)=>a.img_num-b.img_num
+}
 
 const CamList = ({isEditable})=>{
     // Store
@@ -23,6 +29,11 @@ const CamList = ({isEditable})=>{
     const showCamEditor = useCallback( (cam)=>setOpenCam(cam), [])
     const hideCamEditor = useCallback(  ()  =>setOpenCam(null),[])
 
+    // Sort order
+    const {sortKey,sortAsc,renderSortHeaders} = useSort(Object.keys(sortFunctions))
+
+    
+
     //------------------------------------------------------------------------
     // RENDER
     // Calculate total by the way
@@ -35,7 +46,7 @@ const CamList = ({isEditable})=>{
     
     const renderList = ()=>{
         const rows = [...list]
-        .sort((a,b)=>a.name.localeCompare(b.name))
+        .sort((a,b)=>(sortAsc?1:-1)*sortFunctions[sortKey](a,b))
         .map(cam=>{            
             total.img_num += cam.img_num
             let lst = cam.img_lasttime
@@ -57,9 +68,7 @@ const CamList = ({isEditable})=>{
 
         return <>
             <div className="cam-header">
-                <span><span className="sort asc">name</span></span>
-                <span><span className="sort desc">last</span></span>
-                <span><span className="sort">total</span></span>
+                {renderSortHeaders()}
             </div>
             
             <div className="cam-list">
