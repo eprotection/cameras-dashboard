@@ -36,6 +36,26 @@
 .light .icon.gear  {background-image: url(/public/gear-black.svg);}
 .dark  .icon.close {background-image: url(/public/close-white.svg);}
 .light .icon.close {background-image: url(/public/close-black.svg);}
+.dark  .sort.asc   {background-image: url(/public/arrow_downward_w.svg);}
+.light .sort.asc   {background-image: url(/public/arrow_downward_b.svg);}
+.dark  .sort.desc  {background-image: url(/public/arrow_upward_w.svg);}
+.light .sort.desc  {background-image: url(/public/arrow_upward_b.svg);}
+
+.sort {
+  cursor:pointer;
+  background-size:     contain;                  
+  background-repeat:   no-repeat;
+  background-position: center right;     
+
+}
+.sort.asc, 
+.sort.desc {
+    text-decoration: underline;
+    padding-right: 1.2em;
+}
+.sort:hover {
+  font-weight: bold;
+}
 
 .bar{
   display:flex;

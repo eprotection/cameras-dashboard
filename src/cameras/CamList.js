@@ -57,7 +57,9 @@ const CamList = ({isEditable})=>{
 
         return <>
             <div className="cam-header">
-                <span>name</span><span>last</span><span>total</span>
+                <span><span className="sort asc">name</span></span>
+                <span><span className="sort desc">last</span></span>
+                <span><span className="sort">total</span></span>
             </div>
             
             <div className="cam-list">
